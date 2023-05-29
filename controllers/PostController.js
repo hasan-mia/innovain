@@ -3,38 +3,37 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 const path = require("path");
 const fs = require("fs");
-const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
-const ffmpeg = require("fluent-ffmpeg");
-ffmpeg.setFfmpegPath(ffmpegPath);
+
 // Doamin
 const domain = process.env.HOST_URL;
 
-// ========Create a new status============
-const statusPublish = async (req, res) => {
-  const newStatus = new Post(req.body);
+// ========Create a new post============
+const postPublish = async (req, res) => {
+  const newPost = new Post(req.body);
   try {
-    const saveStatus = await newStatus.save();
+    const savePost = await newPost.save();
     res.status(200).send({
       status: 200,
       success: true,
-      message: "status publish successfully",
-      data: saveStatus,
+      message: "post publish successfully",
+      data: savePost,
     });
   } catch (error) {
     return res.status(500).send(error);
   }
 };
 
-// ========update status============
-const statusUpdate = async (req, res) => {
+// ========update post============
+const postUpdate = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.userId === req.body.userId || req.body.isAdmin) {
-      await post.updateOne({ $set: req.body });
+      await post.updateOne({ $set: req.body }, { upsert: true });
       res.status(200).send({
         status: 200,
         success: true,
-        message: "status update successfully",
+        message: "post update successfully",
+        data: post
       });
     } else {
       res
@@ -46,12 +45,35 @@ const statusUpdate = async (req, res) => {
   }
 };
 
+// ======== get single posts ============
+
+const getPost = async (req, res) => {
+  try {
+  const post = await Post.findOne({ id: req.params.id });
+  if (!post) {
+    res
+      .status(404)
+      .send({ status: 404, success: false, message: "post not found" });
+    } else {
+      res
+        .status(200)
+        .send({
+          status: 200,
+          success: true,
+          message: "post found",
+          data: post,
+        });
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+
+}
 // ======== get all posts for admin ============
 const getAllPost = async (req, res) => {
   try {
-    const user = await User.findById(req.body.userId);
-    if (user.isAdmin) {
-      const posts = await Post.find({});
+     const posts = await Post.find({});
+    if (posts) {
       res
         .status(200)
         .send({ status: 200, success: true, message: "All post", data: posts });
@@ -66,7 +88,8 @@ const getAllPost = async (req, res) => {
 };
 
 module.exports = {
-  statusPublish,
-  statusUpdate,
+  postPublish,
+  postUpdate,
+  getPost,
   getAllPost,
 };

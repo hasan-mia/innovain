@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-// user 0 means normal user, 1 means vendor user, 2 means editor and 3/isAdmin means super admin
+// user type 0 means normal user, 1 means  means super admin
+// user  status 0 means acess, 1 means  means no access
+
 const UserSchema = new mongoose.Schema(
   {
     email: {
@@ -18,6 +20,10 @@ const UserSchema = new mongoose.Schema(
       default: false,
     },
     type: {
+      type: Number,
+      default: 0,
+    },
+    status: {
       type: Number,
       default: 0,
     },

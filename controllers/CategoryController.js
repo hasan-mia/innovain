@@ -1,8 +1,6 @@
 /* eslint-disable no-undef */
 const Category = require("../models/Category");
 const User = require("../models/User");
-// Doamin
-const domain = process.env.HOST_URL;
 
 // ========Create a new category============
 const categoryPublish = async (req, res) => {
@@ -30,14 +28,14 @@ const categoryUpdate = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
     if (category.userId === req.body.userId || req.body.isAdmin) {
-      await category.updateOne({ $set: req.body });
+      await category.updateOne({ $set: req.body }, { upsert: true });
       res
         .status(200)
         .send({
           status: 200,
           success: true,
-          message: "Product update successfully",
-          data: productUpdate,
+          message: "Category update successfully",
+          data: category,
         });
     } else {
       res
@@ -49,14 +47,14 @@ const categoryUpdate = async (req, res) => {
   }
 };
 
-// ========get single product ============
+// ========get single cagtegroy ============
 const getCategory = async (req, res)=>{
   try {
-    const product = await Category.findOne({id: req.params.id})
-    if (!product) {
-      res.status(404).send({status: 404, success: false, message: 'Product not found'})
+    const category = await Category.findOne({id: req.params.id})
+    if (!category) {
+      res.status(404).send({status: 404, success: false, message: 'Category not found'})
     }else{
-      res.status(200).send({status: 200, success: true, message: 'Product found', data: product})
+      res.status(200).send({status: 200, success: true, message: 'Category found', data: category})
     }
   } catch (error) {
     res.status(500).send(error)
@@ -64,5 +62,19 @@ const getCategory = async (req, res)=>{
 
 }
 
+// ========get all cagtegroy ============
+const getAllCategory = async (req, res)=>{
+  try {
+    const category = await Category.find({})
+    if (!category) {
+      res.status(404).send({status: 404, success: false, message: 'Category not found'})
+    }else{
+      res.status(200).send({status: 200, success: true, message: 'Category found', data: category})
+    }
+  } catch (error) {
+    res.status(500).send(error)
+  }
 
-module.exports = { categoryPublish, categoryUpdate, getCategory};
+}
+
+module.exports = { categoryPublish, categoryUpdate, getCategory, getAllCategory};

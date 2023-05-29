@@ -61,22 +61,16 @@ const updateUser = async (req, res) => {
       }
     }
     try {
-      const checkUsername = await User.findOne({ username: req.body.username });
+   
       const checkEmail = await User.findOne({ email: req.body.email });
-      if (checkUsername) {
-        res.status(409).send({
-          status: 409,
-          success: false,
-          error: "username already taken",
-        });
-      } else if (checkEmail) {
+      if (checkEmail) {
         res
           .status(406)
           .send({ status: 406, success: false, error: "email already used" });
       } else {
         const user = await User.findByIdAndUpdate(req.params.id, {
           $set: req.body,
-        });
+        }, {upsert: true});
         res.status(200).send({
           status: 200,
           success: true,

@@ -46,7 +46,6 @@ const loginUser = async (req, res) => {
   const emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validEmail = emailRegEx.test(req.body.email);
   const checkEmail = await User.findOne({ email: req.body.email });
-  console.log(!checkEmail, !validEmail);
   if (!validEmail) {
     res
       .status(406)
@@ -58,9 +57,7 @@ const loginUser = async (req, res) => {
   } else {
     try {
       // get user mail/username
-      const user = await User.findOne({
-        $or: [{ email: req.body.email }, { username: req.body.username }],
-      });
+      const user = await User.findOne({ email: req.body.email });
       !user &&
         res
           .status(412)
@@ -80,7 +77,6 @@ const loginUser = async (req, res) => {
         const token = await jwt.sign(
           {
             userId: user._id,
-            username: user.username,
             email: user.email,
             isAdmin: user.isAdmin,
           },
