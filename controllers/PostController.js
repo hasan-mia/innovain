@@ -27,7 +27,7 @@ const postPublish = async (req, res) => {
 const postUpdate = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (post.userId === req.body.userId || req.body.isAdmin) {
+    if (req.body.isAdmin) {
       await post.updateOne({ $set: req.body }, { upsert: true });
       res.status(200).send({
         status: 200,
@@ -47,7 +47,9 @@ const postUpdate = async (req, res) => {
 
 const postDelete = async (req, res) => {
   try {
-    const post = await Post.findOneAndDelete({id: req.params.id });
+     if (req.body.isAdmin) {
+    const post = await Post.findOneAndDelete(req.params.id);
+    
     if (!post) {
       res.status(404).send({ status: 404, success: false, message: "post not found" })
     }else{
@@ -59,6 +61,9 @@ const postDelete = async (req, res) => {
           message: "delete post successfully",
         });
     }
+  }else{
+    res.status(403).send({ status: 403, success: false, message: "you can't update" });
+  }
   } catch (error) {
     res.status(500).send(error)
   }
@@ -68,7 +73,7 @@ const postDelete = async (req, res) => {
 
 const getPost = async (req, res) => {
   try {
-  const post = await Post.findOne({ id: req.params.id });
+  const post = await Post.findOne({ _id: req.params.id });
   if (!post) {
     res
       .status(404)

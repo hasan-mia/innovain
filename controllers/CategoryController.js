@@ -51,7 +51,7 @@ const deleteCategory = async (req, res) => {
   if (req.body.isAdmin) {
     try {
       //delete user
-      await Category.findByIdAndDelete(req.params.id);
+      await Category.findByIdAndDelete({ _id: req.params.id });
       res.status(200).send({
         status: 200,
         success: true,

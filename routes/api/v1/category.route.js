@@ -22,7 +22,7 @@ router.route("/update/:id").put(limiter, verifyJWT, imagesUpload, CategoryContro
  * @apiDescription delete category of user
  * @apiPermission anyone
  */
-router.route("/delete:id").delete(limiter, verifyJWT, CategoryController.deleteCategory);
+router.route("/delete/:id").delete(limiter, verifyJWT, CategoryController.deleteCategory);
 
 /**
  * @api {put} /get all category

@@ -9,27 +9,21 @@ const router = require("express").Router();
  * @apiDescription save status of user
  * @apiPermission anyone
  */
-router
-  .route("/post")
-  .post(limiter, verifyJWT, PostController.postPublish);
+router.route("/").post(limiter, verifyJWT, PostController.postPublish);
 
 /**
  * @api {put} /update status
  * @apiDescription update status of user
  * @apiPermission anyone
  */
-router
-  .route("/post/update/:id")
-  .put(limiter, verifyJWT, PostController.postUpdate);
+router.route("/update/:id").put(limiter, verifyJWT, PostController.postUpdate);
 
   /**
  * @api {put} /update status
  * @apiDescription update status of user
  * @apiPermission anyone
  */
-router
-  .route("/post/delte/:id")
-  .put(limiter, verifyJWT, PostController.postDelete);
+router.route("/delete/:id").delete(limiter, verifyJWT, PostController.postDelete);
 
 
   /**
@@ -37,7 +31,7 @@ router
  * @apiDescription single post of user
  * @apiPermission anyone
  */
-router.route("/posts").get(limiter, verifyJWT, PostController.getPost);
+router.route("/:id").get(limiter, verifyJWT, PostController.getPost);
 
 
 /**
@@ -45,6 +39,6 @@ router.route("/posts").get(limiter, verifyJWT, PostController.getPost);
  * @apiDescription all post of user
  * @apiPermission anyone
  */
-router.route("/posts").get(limiter, verifyJWT, PostController.getAllPost);
+router.route("/").get(limiter, verifyJWT, PostController.getAllPost);
 
 module.exports = router;

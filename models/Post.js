@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const slug = require("mongoose-slug-generator");
-// type is refered 0 means inactive post, 1 means active post
+// status is refered 0 means inactive post, 1 means active post
 mongoose.plugin(slug);
 
 const PostSchema = new mongoose.Schema(
@@ -19,11 +19,11 @@ const PostSchema = new mongoose.Schema(
       slug: "title",
       unique: true,
     },
-    category: {
+    catId: {
       type: String,
       max: 5000,
     },
-    type: {
+    status: {
       type: Number,
       default: 0,
     },
