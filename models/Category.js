@@ -15,10 +15,6 @@ const categorySchema = new mongoose.Schema(
       slug: "title",
       unique: true,
     },
-    type: {
-      type: Number,
-      default: 0,
-    },
   },
   {
     timestamps: true,

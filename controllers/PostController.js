@@ -45,6 +45,25 @@ const postUpdate = async (req, res) => {
   }
 };
 
+const postDelete = async (req, res) => {
+  try {
+    const post = await Post.findOneAndDelete({id: req.params.id });
+    if (!post) {
+      res.status(404).send({ status: 404, success: false, message: "post not found" })
+    }else{
+      res
+        .status(200)
+        .send({
+          status: 200,
+          success: true,
+          message: "delete post successfully",
+        });
+    }
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
 // ======== get single posts ============
 
 const getPost = async (req, res) => {
@@ -90,6 +109,7 @@ const getAllPost = async (req, res) => {
 module.exports = {
   postPublish,
   postUpdate,
+  postDelete,
   getPost,
   getAllPost,
 };

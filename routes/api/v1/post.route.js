@@ -23,6 +23,16 @@ router
   .put(limiter, verifyJWT, PostController.postUpdate);
 
   /**
+ * @api {put} /update status
+ * @apiDescription update status of user
+ * @apiPermission anyone
+ */
+router
+  .route("/post/delte/:id")
+  .put(limiter, verifyJWT, PostController.postDelete);
+
+
+  /**
  * @api {get} /get single post for admin
  * @apiDescription single post of user
  * @apiPermission anyone

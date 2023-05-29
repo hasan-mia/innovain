@@ -33,8 +33,8 @@ connection()
 // apiRoute()
 app.use('/api/v1/auth', authRoute)        // authentication route
 app.use('/api/v1/user', userRoute)        // user route
+app.use('/api/v1/category', categoryRoute)  // category route
 app.use('/api/v1/post', postRoute)        // post route
-app.use('/api/v1/product', categoryRoute)  // category route
 
 // // ===================================//
 // //      setup socket IO Server        //

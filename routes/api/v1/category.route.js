@@ -17,20 +17,20 @@ router.route("/").post(limiter, verifyJWT, imagesUpload, CategoryController.cate
   * @apiPermission anyone
  */  
 router.route("/update/:id").put(limiter, verifyJWT, imagesUpload, CategoryController.categoryUpdate)
-
 /**
-  * @api {put} /get category by id
-  * @apiDescription get category of user
-  * @apiPermission anyone
- */  
-router.route("/:id").get(limiter, verifyJWT, CategoryController.getCategory)
+ * @api {put} /delete category by id
+ * @apiDescription delete category of user
+ * @apiPermission anyone
+ */
+router.route("/delete:id").delete(limiter, verifyJWT, CategoryController.deleteCategory);
 
 /**
  * @api {put} /get all category
  * @apiDescription get category of user
  * @apiPermission anyone
  */
-router.route("/:id").get(limiter, verifyJWT, CategoryController.getAllCategory);
+router.route("/").get(limiter, verifyJWT, CategoryController.getAllCategory);
+
 
 
 module.exports = router;

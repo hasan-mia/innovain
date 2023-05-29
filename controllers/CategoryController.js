@@ -27,7 +27,7 @@ const categoryUpdate = async (req, res) => {
 
   try {
     const category = await Category.findById(req.params.id);
-    if (category.userId === req.body.userId || req.body.isAdmin) {
+    if (req.body.isAdmin) {
       await category.updateOne({ $set: req.body }, { upsert: true });
       res
         .status(200)
@@ -35,7 +35,6 @@ const categoryUpdate = async (req, res) => {
           status: 200,
           success: true,
           message: "Category update successfully",
-          data: category,
         });
     } else {
       res
@@ -47,25 +46,33 @@ const categoryUpdate = async (req, res) => {
   }
 };
 
-// ========get single cagtegroy ============
-const getCategory = async (req, res)=>{
-  try {
-    const category = await Category.findOne({id: req.params.id})
-    if (!category) {
-      res.status(404).send({status: 404, success: false, message: 'Category not found'})
-    }else{
-      res.status(200).send({status: 200, success: true, message: 'Category found', data: category})
+// ========Delete category===========
+const deleteCategory = async (req, res) => {
+  if (req.body.isAdmin) {
+    try {
+      //delete user
+      await Category.findByIdAndDelete(req.params.id);
+      res.status(200).send({
+        status: 200,
+        success: true,
+        message: "account has been deleted successfully",
+      });
+    } catch (error) {
+      return res.status(500).send(error);
     }
-  } catch (error) {
-    res.status(500).send(error)
+  } else {
+    return res.status(403).send({
+      status: 403,
+      success: false,
+      message: "you can delete only your accout",
+    });
   }
-
-}
+};
 
 // ========get all cagtegroy ============
 const getAllCategory = async (req, res)=>{
   try {
-    const category = await Category.find({})
+    const category = await Category.find({});
     if (!category) {
       res.status(404).send({status: 404, success: false, message: 'Category not found'})
     }else{
@@ -77,4 +84,4 @@ const getAllCategory = async (req, res)=>{
 
 }
 
-module.exports = { categoryPublish, categoryUpdate, getCategory, getAllCategory};
+module.exports = { categoryPublish, categoryUpdate, deleteCategory, getAllCategory};
