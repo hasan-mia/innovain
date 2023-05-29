@@ -27,14 +27,24 @@ const registerUser = async (req, res) => {
         password: hashPassword,
       });
       await newUser.save();
-      res
-        .status(201)
+      if (newUser) {
+              // sign token and send it in response
+      const token = await jwt.sign(
+        {
+          email: req.body.email,
+          password: hashPassword,
+        },
+        process.env.ACCESS_TOKEN_SECRET
+      );
+      res.status(201)
         .send({
           status: 200,
           success: true,
           message: `Register successfully`,
-          user: newUser,
+          user: token,
         });
+      }
+     
     } catch (error) {
       return res.status(500).send(error);
     }
