@@ -15,7 +15,7 @@ export default function SingIn({
     credentialHandler,
     email,
     pass,
-    handleSignUpIn,
+    handleSignIn,
 }) {
     return (
         <Card className="w-96">
@@ -50,7 +50,7 @@ export default function SingIn({
             </CardBody>
             {/* card footer */}
             <CardFooter className="pt-0">
-                <Button variant="gradient" fullWidth onClick={handleSignUpIn}>
+                <Button variant="gradient" fullWidth onClick={handleSignIn}>
                     Sign In
                 </Button>
                 <Typography variant="small" className="mt-6 flex justify-center">

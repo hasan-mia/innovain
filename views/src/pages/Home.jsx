@@ -1,17 +1,19 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import SingIn from '../components/auth/SingIn';
 import SingUp from '../components/auth/SingUp';
 import auth from '../redux/api/auth';
 
 export default function Home() {
-    const dispatch = useDispatch();
-    const { user, isSuccess } = useSelector((state) => state.auth);
+    // const { user, isSuccess } = useSelector((state) => state.auth);
+    // const dispatch = useDispatch()
+    const navigate = useNavigate();
     const [type, setType] = useState('signin');
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [token, setToken] = useState(null);
     // handle email, password credentials
     const credentialHandler = (name, data) => {
         if (name === 'email') {
@@ -21,23 +23,69 @@ export default function Home() {
         }
     };
     // handle signup
-    const handleSignUp = (e) => {
-        e.preventDefault();
+    const handleSignUp = async () => {
         const data = {
             email,
             password: pass,
         };
-        dispatch(auth.signUp(data));
+        // dispatch(auth.signUp(data));
+        const res = await auth.registerUser(data);
+        if (res.status === 201) {
+            toast.success(`${res.data.message}`);
+            localStorage.setItem('session', res.data.token);
+            setToken(res.data.token);
+            setLoading(false);
+        } else if (res.status === 406) {
+            toast.success(`${res.data.error}`);
+            setLoading(false);
+        } else if (res.status === 409) {
+            toast.success(`${res.data.error}`);
+            setLoading(false);
+        } else {
+            toast.success(`something went wrong`);
+            setLoading(false);
+        }
     };
     // handle  singin
-    const handleSignIn = (e) => {
-        e.preventDefault();
+    const handleSignIn = async () => {
         const data = {
             email,
             password: pass,
         };
-        dispatch(auth.signIn(data));
+        // dispatch(auth.signIn(data));
+        const res = await auth.signinUser(data);
+        if (res.status === 200) {
+            toast.success(`${res.data.message}`);
+            localStorage.setItem('session', res.data.token);
+            setToken(res.data.token);
+            setLoading(false);
+        } else if (res.status === 406) {
+            toast.success(`${res.data.error}`);
+            setLoading(false);
+        } else if (res.status === 401) {
+            toast.success(`${res.data.error}`);
+            setLoading(false);
+        } else if (res.status === 404) {
+            toast.success(`${res.data.error}`);
+            setLoading(false);
+        } else if (res.status === 412) {
+            toast.success(`${res.data.error}`);
+            setLoading(false);
+        } else {
+            toast.success(`something went wrong`);
+            setLoading(false);
+        }
     };
+
+    useEffect(() => {
+        if (token) {
+            console.log(token);
+            navigate(-1, { replace: false });
+        } else {
+            console.log('Null');
+        }
+    }, [token, navigate]);
+
     // handle card
     const authController = () => {
         if (type === 'signin') {
@@ -48,7 +96,8 @@ export default function Home() {
                     credentialHandler={credentialHandler}
                     email={email}
                     pass={pass}
-                    handleSignUpIn={handleSignIn}
+                    handleSignIn={handleSignIn}
+                    loading={loading}
                 />
             );
         }
@@ -60,14 +109,12 @@ export default function Home() {
                     credentialHandler={credentialHandler}
                     email={email}
                     pass={pass}
-                    handleSignUpIn={handleSignUp}
+                    handleSignUp={handleSignUp}
+                    loading={loading}
                 />
             );
         }
         return null;
     };
-    // useEffect(() => {
-    //     dispatch(auth.signUp({ email, pass }));
-    // });
     return <div className="flex justify-center my-10">{authController()}</div>;
 }

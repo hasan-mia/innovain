@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
     const [openNav, setOpenNav] = useState(false);
-
     useEffect(() => {
         window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
     }, []);
@@ -15,23 +14,18 @@ export default function Header() {
     const navList = (
         <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
-                <Link to="/" className="flex items-center">
-                    Pages
+                <Link to="/" className="flex items-center uppercase">
+                    Users
                 </Link>
             </Typography>
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
-                <Link to="/" className="flex items-center">
-                    Account
+                <Link to="/" className="flex items-center uppercase">
+                    Category
                 </Link>
             </Typography>
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
-                <Link to="/" className="flex items-center">
-                    Blocks
-                </Link>
-            </Typography>
-            <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
-                <Link to="/" className="flex items-center">
-                    Docs
+                <Link to="/" className="flex items-center uppercase">
+                    Tools
                 </Link>
             </Typography>
         </ul>
@@ -46,17 +40,12 @@ export default function Header() {
                     variant="small"
                     className="mr-4 cursor-pointer py-1.5 font-normal"
                 >
-                    <Link to="/">RMVC</Link>
+                    <Link to="/">INNOVAINFO</Link>
                 </Typography>
                 <div className="hidden lg:block">{navList}</div>
                 <div className="hidden lg:inline-block">
                     <Button variant="gradient" size="sm">
-                        <Link
-                            to="/login"
-                            className="hover:text-white active:text-white focus:text-white no-underline"
-                        >
-                            Login
-                        </Link>
+                        LOGOUT
                     </Button>
                 </div>
                 <IconButton
