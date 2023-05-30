@@ -4,7 +4,7 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 
 // ========Get a User============
-const singleUser = async (req, res) => {
+const singleUserByParams = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (user) {
@@ -25,6 +25,31 @@ const singleUser = async (req, res) => {
     return res.status(500).send(error);
   }
 };
+
+// ========Get a User============
+const singleUserByMail = async (req, res) => {
+  try {
+    const userbyMail = await User.find({ email: req.body.email });
+   
+    if (userbyMail.length > 0) {
+      res.status(200).send({
+        status: 200,
+        success: true,
+        message: `User found successfully`,
+        data: user,
+      });
+    } else {
+      res.status(404).send({
+        status: 404,
+        success: false,
+        message: `user not found`,
+      });
+    }
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 
 // ========Get all User for admin============
 const allleUser = async (req, res) => {
@@ -139,7 +164,8 @@ const userStatusUpdate = async (req, res) => {
 module.exports = {
   updateUser,
   deleteUser,
-  singleUser,
+  singleUserByParams,
+  singleUserByMail,
   allleUser,
   userStatusUpdate,
 };

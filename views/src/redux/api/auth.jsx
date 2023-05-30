@@ -6,18 +6,19 @@ import url from '../config/url';
 
 const name = 'auth/';
 const auth = {};
+
 auth.signUp = createAsyncThunk(`${name}signUp`, async (data) => {
-    const res = await axios.post(url.signUp, { data }, config.basicHeader);
+    const res = await axios.post(url.signUp, data, config.simpleHeader);
     return res;
 });
 
 auth.signIn = createAsyncThunk(`${name}signIn`, async (data) => {
-    const res = await axios.post(url.signIn, { data }, config.basicHeader);
+    const res = await axios.post(url.signIn, data, config.simpleHeader);
     return res;
 });
 
 auth.updateStatus = createAsyncThunk(`${name}signIn`, async (data, id) => {
-    const res = await axios.put(url.updateStatus, { data }, config.paramsWithHeader({ id }));
+    const res = await axios.put(url.updateStatus, data, config.paramsWithHeader({ id }));
     return res;
 });
 

@@ -15,10 +15,18 @@ router.route("/all").get(limiter, verifyJWT, UserController.allleUser)
   * @apiDescription Get a single user
   * @apiPermission admin
 */ 
-router.route("/:id").get(limiter, verifyJWT, UserController.singleUser)
+router.route("/:id").get(limiter, verifyJWT, UserController.singleUserByParams)
 
 /**
-  * @api {put} /get single a user
+ * @api {get} get a single user by params
+ * @apiDescription Get a single user
+ * @apiPermission admin
+ */
+router.route("/single").get(limiter, verifyJWT, UserController.singleUserByMail);
+
+
+/**
+  * @api {put} /get single a user by email
   * @apiDescription Get single the users
   * @apiPermission admin
 */ 

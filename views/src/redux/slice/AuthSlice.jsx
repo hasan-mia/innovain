@@ -12,7 +12,6 @@ const AuthSlice = createSlice({
         errors: null,
         message: null,
         isSuccess: false,
-        issetPhone: false,
         user: null,
         userInfo: null,
     },
@@ -29,33 +28,44 @@ const AuthSlice = createSlice({
             state.isSuccess = false;
             state.isLoading = false;
             state.isSuccess = false;
-            state.issetPhone = false;
             localStorage.removeItem('session');
         },
     },
     extraReducers: (builder) => {
-        // login attempt
-        builder.addCase(auth.auth.pending, (state) => {
+        // === sign up attempt=====
+        builder.addCase(auth.signUp.pending, (state) => {
             state.isLoading = true;
         });
 
-        builder.addCase(auth.auth.fulfilled, (state) => {
+        builder.addCase(auth.signUp.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.issetPhone = true;
+            state.isError = false;
+
+            const { status, data } = action.payload;
+            console.log(status, data);
+            state.user = data;
+            // if (status === 200) {
+            //     state.isSuccess = true;
+            //     localStorage.setItem('session', helpers.encrypt(JSON.stringify(data)));
+            // } else {
+            //     state.message = 'Something went wrong? Please Try again';
+            //     toast.error('Please enter valid code');
+            // }
         });
 
-        builder.addCase(auth.auth.rejected, (state) => {
+        builder.addCase(auth.signUp.rejected, (state) => {
             state.isLoading = false;
             state.isError = true;
         });
-        // login confirmation
-        builder.addCase(auth.authConfirm.pending, (state) => {
+
+        // === sign In attempt=====
+        builder.addCase(auth.signIn.pending, (state) => {
             state.isLoading = true;
         });
 
-        builder.addCase(auth.authConfirm.fulfilled, (state, action) => {
+        builder.addCase(auth.signIn.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.issetPhone = true;
+            state.isError = false;
 
             const { status, data } = action.payload;
             if (status === 202) {
@@ -67,11 +77,12 @@ const AuthSlice = createSlice({
             }
         });
 
-        builder.addCase(auth.authConfirm.rejected, (state) => {
+        builder.addCase(auth.signIn.rejected, (state) => {
             state.isLoading = false;
             state.isError = true;
         });
-        // user infos
+
+        // User infos
         builder.addCase(auth.userInfo.pending, (state) => {
             state.isLoading = true;
         });

@@ -9,7 +9,14 @@ import {
     Typography,
 } from '@material-tailwind/react';
 
-export default function SingUp({ authController, setType, credentialHandler, email, pass }) {
+export default function SingUp({
+    authController,
+    setType,
+    credentialHandler,
+    email,
+    pass,
+    handleSignUpIn,
+}) {
     return (
         <Card className="w-96">
             {/* card header */}
@@ -26,6 +33,7 @@ export default function SingUp({ authController, setType, credentialHandler, ema
             <CardBody className="flex flex-col gap-4">
                 <Input
                     label="Email"
+                    type="email"
                     value={email}
                     name="email"
                     size="lg"
@@ -33,6 +41,7 @@ export default function SingUp({ authController, setType, credentialHandler, ema
                 />
                 <Input
                     label="Password"
+                    type="password"
                     value={pass}
                     name="password"
                     size="lg"
@@ -41,7 +50,7 @@ export default function SingUp({ authController, setType, credentialHandler, ema
             </CardBody>
             {/* card footer */}
             <CardFooter className="pt-0">
-                <Button variant="gradient" fullWidth>
+                <Button variant="gradient" fullWidth onClick={handleSignUpIn}>
                     Sign Up
                 </Button>
                 <Typography variant="small" className="mt-6 flex justify-center">
