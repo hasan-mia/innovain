@@ -38,10 +38,10 @@ const registerUser = async (req, res) => {
       );
       res.status(201)
         .send({
-          status: 200,
+          status: 201,
           success: true,
           message: `Register successfully`,
-          user: token,
+          token: token,
         });
       }
      

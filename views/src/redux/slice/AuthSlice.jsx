@@ -40,17 +40,15 @@ const AuthSlice = createSlice({
         builder.addCase(auth.signUp.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isError = false;
-
             const { status, data } = action.payload;
-            console.log(status, data);
-            state.user = data;
-            // if (status === 200) {
-            //     state.isSuccess = true;
-            //     localStorage.setItem('session', helpers.encrypt(JSON.stringify(data)));
-            // } else {
-            //     state.message = 'Something went wrong? Please Try again';
-            //     toast.error('Please enter valid code');
-            // }
+            if (status === 201) {
+                state.isSuccess = true;
+                localStorage.setItem('session', helpers.encrypt(JSON.stringify(data)));
+                toast.success('Successfully register');
+            } else {
+                state.message = 'Something went wrong? Please Try again';
+                toast.error('Please enter valid code');
+            }
         });
 
         builder.addCase(auth.signUp.rejected, (state) => {
@@ -71,6 +69,7 @@ const AuthSlice = createSlice({
             if (status === 202) {
                 state.isSuccess = true;
                 localStorage.setItem('session', helpers.encrypt(JSON.stringify(data)));
+                toast.success('Successfully login');
             } else {
                 state.message = 'Something went wrong? Please Try again';
                 toast.error('Please enter valid code');

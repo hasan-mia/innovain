@@ -1,6 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-unused-vars */
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SingIn from '../components/auth/SingIn';
@@ -25,15 +24,6 @@ export default function Home() {
             email,
             password: pass,
         };
-
-        axios
-            .post('https://innovain.onrender.com/api/v1/auth/register', data)
-            .then((res) => {
-                console.log(res.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
         dispatch(auth.signUp(data));
     };
 

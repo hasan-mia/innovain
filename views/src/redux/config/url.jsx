@@ -7,7 +7,7 @@ url.signIn = `${config.baseUrl}api/v1/auth/login`;
 // user information
 url.updateStatus = `${config.baseUrl}api/v1/user/status`; // id with parameters [put] and isAdmin = true
 url.allUser = `${config.baseUrl}api/v1/user/all`; // [get]
-url.userInfo = `${config.baseUrl}api/v1/user`; // id with parameters [get]
+url.userInfo = `${config.baseUrl}api/v1/user/single`; // email with body [get]
 // category
 url.addCategory = `${config.baseUrl}api/v1/category`; // [post]
 url.updateCategory = `${config.baseUrl}api/v1/category/update`; // id with parameters [put]
