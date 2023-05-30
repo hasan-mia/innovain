@@ -113,10 +113,33 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// ========Update User status===========
+const userStatusUpdate = async (req, res) => {
+  if (req.body.isAdmin) {
+    try {
+      const user = await User.findByIdAndUpdate(req.params.id,{$set: { status: req.body.status }},{ upsert: true });
+      res.status(200).send({
+        status: 200,
+        success: true,
+        message: "status has been updated",
+      });
+
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  } else {
+    return res.status(403).send({
+      status: 403,
+      success: false,
+      message: "you can update it",
+    });
+  }
+};
 
 module.exports = {
   updateUser,
   deleteUser,
   singleUser,
   allleUser,
+  userStatusUpdate,
 };

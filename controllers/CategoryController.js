@@ -55,7 +55,7 @@ const deleteCategory = async (req, res) => {
       res.status(200).send({
         status: 200,
         success: true,
-        message: "account has been deleted successfully",
+        message: "category deleted successfully",
       });
     } catch (error) {
       return res.status(500).send(error);
@@ -64,7 +64,7 @@ const deleteCategory = async (req, res) => {
     return res.status(403).send({
       status: 403,
       success: false,
-      message: "you can delete only your accout",
+      message: "category can't delete",
     });
   }
 };

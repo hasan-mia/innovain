@@ -18,17 +18,24 @@ router.route("/all").get(limiter, verifyJWT, UserController.allleUser)
 router.route("/:id").get(limiter, verifyJWT, UserController.singleUser)
 
 /**
-  * @api {put} /update a user
-  * @apiDescription Get all the users
+  * @api {put} /get single a user
+  * @apiDescription Get single the users
   * @apiPermission admin
 */ 
  router.route("/update/:id").put(limiter, verifyJWT, UserController.updateUser)
 
 /**
    * @api {delete} delete a user
-   * @apiDescription Get all the users
+   * @apiDescription delete the users
    * @apiPermission admin
 */ 
  router.route("/delete/:id").delete(limiter, verifyJWT, UserController.deleteUser)
+
+ /**
+   * @api {delete} change status of a user
+   * @apiDescription change status the users
+   * @apiPermission admin
+*/ 
+ router.route("/status/:id").put(limiter, verifyJWT, UserController.userStatusUpdate)
  
 module.exports = router
