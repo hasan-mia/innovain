@@ -16,13 +16,18 @@ auth.signIn = createAsyncThunk(`${name}signIn`, async (data) => {
     return res;
 });
 
-auth.allUser = createAsyncThunk(`${name}allUser`, async () => {
-    const res = await axios.get(url.allUser, config.basicHeader);
+auth.updateStatus = createAsyncThunk(`${name}signIn`, async (data, id) => {
+    const res = await axios.put(url.updateStatus, { data }, config.paramsWithHeader({ id }));
     return res;
 });
 
-auth.userInfo = createAsyncThunk(`${name}userInfo`, async () => {
-    const res = await axios.get(url.userInfo, config.paramsWithHeader(config.token()));
+auth.allUser = createAsyncThunk(`${name}allUser`, async (data) => {
+    const res = await axios.get(url.allUser, { data }, config.basicHeader);
+    return res;
+});
+
+auth.userInfo = createAsyncThunk(`${name}userInfo`, async (id) => {
+    const res = await axios.get(url.userInfo, config.paramsWithHeader({ id }));
     return res;
 });
 
