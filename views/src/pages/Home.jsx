@@ -12,6 +12,7 @@ export default function Home() {
     const [type, setType] = useState('signin');
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    // handle email, password credentials
     const credentialHandler = (name, data) => {
         if (name === 'email') {
             setEmail(data);
@@ -19,14 +20,25 @@ export default function Home() {
             setPass(data);
         }
     };
-    const handleSignUpIn = async () => {
+    // handle signup
+    const handleSignUp = (e) => {
+        e.preventDefault();
         const data = {
             email,
             password: pass,
         };
         dispatch(auth.signUp(data));
     };
-
+    // handle  singin
+    const handleSignIn = (e) => {
+        e.preventDefault();
+        const data = {
+            email,
+            password: pass,
+        };
+        dispatch(auth.signIn(data));
+    };
+    // handle card
     const authController = () => {
         if (type === 'signin') {
             return (
@@ -36,7 +48,7 @@ export default function Home() {
                     credentialHandler={credentialHandler}
                     email={email}
                     pass={pass}
-                    handleSignUpIn={handleSignUpIn}
+                    handleSignUpIn={handleSignIn}
                 />
             );
         }
@@ -48,7 +60,7 @@ export default function Home() {
                     credentialHandler={credentialHandler}
                     email={email}
                     pass={pass}
-                    handleSignUpIn={handleSignUpIn}
+                    handleSignUpIn={handleSignUp}
                 />
             );
         }

@@ -10,7 +10,6 @@ const AuthSlice = createSlice({
         isLoading: false,
         isError: false,
         errors: null,
-        message: null,
         isSuccess: false,
         user: null,
         userInfo: null,
@@ -43,11 +42,16 @@ const AuthSlice = createSlice({
             const { status, data } = action.payload;
             if (status === 201) {
                 state.isSuccess = true;
-                localStorage.setItem('session', helpers.encrypt(JSON.stringify(data)));
-                toast.success('Successfully register');
+                localStorage.setItem('session', data.token);
+                toast.success(`${data.message}`);
+            } else if (status === 406) {
+                state.isSuccess = false;
+                toast.success(`${data.message}`);
+            } else if (status === 409) {
+                state.isSuccess = false;
+                toast.success(`${data.message}`);
             } else {
-                state.message = 'Something went wrong? Please Try again';
-                toast.error('Please enter valid code');
+                toast.error('something went wrong');
             }
         });
 
@@ -64,14 +68,24 @@ const AuthSlice = createSlice({
         builder.addCase(auth.signIn.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isError = false;
-
             const { status, data } = action.payload;
-            if (status === 202) {
+            if (status === 200) {
                 state.isSuccess = true;
-                localStorage.setItem('session', helpers.encrypt(JSON.stringify(data)));
-                toast.success('Successfully login');
+                localStorage.setItem('session', data.token);
+                toast.success(`${data.message}`);
+            } else if (status === 406) {
+                state.isSuccess = false;
+                toast.success(`${data.message}`);
+            } else if (status === 401) {
+                state.isSuccess = false;
+                toast.success(`${data.message}`);
+            } else if (status === 404) {
+                state.isSuccess = false;
+                toast.success(`${data.message}`);
+            } else if (status === 412) {
+                state.isSuccess = false;
+                toast.success(`${data.message}`);
             } else {
-                state.message = 'Something went wrong? Please Try again';
                 toast.error('Please enter valid code');
             }
         });

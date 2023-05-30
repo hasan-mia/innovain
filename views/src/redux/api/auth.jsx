@@ -9,12 +9,12 @@ const auth = {};
 
 auth.signUp = createAsyncThunk(`${name}signUp`, async (data) => {
     const res = await axios.post(url.signUp, data, config.simpleHeader);
-    console.log(res);
     return res;
 });
 
 auth.signIn = createAsyncThunk(`${name}signIn`, async (data) => {
     const res = await axios.post(url.signIn, data, config.simpleHeader);
+    console.log(res);
     return res;
 });
 

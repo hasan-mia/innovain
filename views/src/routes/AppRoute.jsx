@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import AdminLayout from '../layouts/AdminLayout';
+import AppLayout from '../layouts/AppLayout';
 import RenterLayout from '../layouts/RenterLayout';
 import AdminDashboard from '../pages/AdminDashboard';
 import Home from '../pages/Home';
@@ -12,7 +13,16 @@ export default function AppRoute() {
     return (
         <Routes>
             {/*= ==============PUblic Route======== */}
-            <Route path="/" element={<Home />} />
+            <Route
+                element={
+                    <AppLayout>
+                        <Outlet />
+                    </AppLayout>
+                }
+            >
+                <Route path="/" element={<Home />} />
+            </Route>
+
             {/* ==============Admin Route ======== */}
             <Route
                 element={

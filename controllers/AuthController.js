@@ -102,8 +102,8 @@ const loginUser = async (req, res) => {
           });
       } else {
         res
-          .status(412)
-          .send({ status: 412, success: false, error: "wrong password!" });
+          .status(401)
+          .send({ status: 401, success: false, error: "wrong password!" });
       }
     } catch (error) {
       return res.status(500).send(error);
