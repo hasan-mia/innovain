@@ -15,7 +15,7 @@ const store = configureStore({
                 ignoredActions: [
                     'auth/signUp/fulfilled',
                     'auth/signIn/fulfilled',
-                    'auth/userInfo/fulfilled',
+                    'auth/allUser/fulfilled',
                     'category/allCategory/fulfilled',
                     'post/allPost/fulfilled',
                 ],

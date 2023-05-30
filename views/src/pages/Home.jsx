@@ -1,120 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import SingIn from '../components/auth/SingIn';
-import SingUp from '../components/auth/SingUp';
-import auth from '../redux/api/auth';
+import React from 'react';
 
 export default function Home() {
-    // const { user, isSuccess } = useSelector((state) => state.auth);
-    // const dispatch = useDispatch()
-    const navigate = useNavigate();
-    const [type, setType] = useState('signin');
-    const [email, setEmail] = useState('');
-    const [pass, setPass] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [token, setToken] = useState(null);
-    // handle email, password credentials
-    const credentialHandler = (name, data) => {
-        if (name === 'email') {
-            setEmail(data);
-        } else if (name === 'password') {
-            setPass(data);
-        }
-    };
-    // handle signup
-    const handleSignUp = async () => {
-        const data = {
-            email,
-            password: pass,
-        };
-        // dispatch(auth.signUp(data));
-        const res = await auth.registerUser(data);
-        if (res.status === 201) {
-            toast.success(`${res.data.message}`);
-            localStorage.setItem('session', res.data.token);
-            setToken(res.data.token);
-            setLoading(false);
-        } else if (res.status === 406) {
-            toast.success(`${res.data.error}`);
-            setLoading(false);
-        } else if (res.status === 409) {
-            toast.success(`${res.data.error}`);
-            setLoading(false);
-        } else {
-            toast.success(`something went wrong`);
-            setLoading(false);
-        }
-    };
-    // handle  singin
-    const handleSignIn = async () => {
-        const data = {
-            email,
-            password: pass,
-        };
-        // dispatch(auth.signIn(data));
-        const res = await auth.signinUser(data);
-        if (res.status === 200) {
-            toast.success(`${res.data.message}`);
-            localStorage.setItem('session', res.data.token);
-            setToken(res.data.token);
-            setLoading(false);
-        } else if (res.status === 406) {
-            toast.success(`${res.data.error}`);
-            setLoading(false);
-        } else if (res.status === 401) {
-            toast.success(`${res.data.error}`);
-            setLoading(false);
-        } else if (res.status === 404) {
-            toast.success(`${res.data.error}`);
-            setLoading(false);
-        } else if (res.status === 412) {
-            toast.success(`${res.data.error}`);
-            setLoading(false);
-        } else {
-            toast.success(`something went wrong`);
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (token) {
-            console.log(token);
-            navigate('/dashboard', { replace: true });
-        } else {
-            console.log('Null');
-        }
-    }, [token, navigate]);
-
-    // handle card
-    const authController = () => {
-        if (type === 'signin') {
-            return (
-                <SingIn
-                    authController={authController}
-                    setType={setType}
-                    credentialHandler={credentialHandler}
-                    email={email}
-                    pass={pass}
-                    handleSignIn={handleSignIn}
-                    loading={loading}
-                />
-            );
-        }
-        if (type === 'signup') {
-            return (
-                <SingUp
-                    authController={authController}
-                    setType={setType}
-                    credentialHandler={credentialHandler}
-                    email={email}
-                    pass={pass}
-                    handleSignUp={handleSignUp}
-                    loading={loading}
-                />
-            );
-        }
-        return null;
-    };
-    return <div className="flex justify-center my-10">{authController()}</div>;
+    return (
+        <div className="grid justify-center my-10">
+            <h1 className="text-3xl font-bold text-green-600">Welcome to INNOVAINFO</h1>
+            <div className="text-center">
+                <p className="text-red-600">Admin Credentials</p>
+                <p>
+                    <span className="font-bold">Email:</span>
+                    admin@admin.com
+                </p>
+                <p>
+                    <span className="font-bold">Password:</span>
+                    123456
+                </p>
+            </div>
+        </div>
+    );
 }

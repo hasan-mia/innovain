@@ -2,12 +2,14 @@ import { Button, IconButton, MobileNav, Navbar, Typography } from '@material-tai
 import { useEffect, useState } from 'react';
 import { HiBars3 } from 'react-icons/hi2';
 import { MdClose } from 'react-icons/md';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logOut } from '../../redux/slice/AuthSlice';
 
 export default function Header() {
+    const { isLogin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-    const { logOut } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
     const [openNav, setOpenNav] = useState(false);
     // handle logout
     const handleLogout = () => {
@@ -51,9 +53,27 @@ export default function Header() {
                 </Typography>
                 <div className="hidden lg:block">{navList}</div>
                 <div className="hidden lg:inline-block">
-                    <Button variant="gradient" size="sm">
-                        LOGOUT
-                    </Button>
+                    {isLogin ? (
+                        <Button
+                            variant="gradient"
+                            size="sm"
+                            fullWidth
+                            className="mb-2"
+                            onClick={handleLogout}
+                        >
+                            LOGOUT
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="gradient"
+                            size="sm"
+                            fullWidth
+                            className="mb-2"
+                            onClick={() => navigate('/auth')}
+                        >
+                            LOGIN
+                        </Button>
+                    )}
                 </div>
                 <IconButton
                     variant="text"
@@ -67,15 +87,27 @@ export default function Header() {
             <MobileNav open={openNav}>
                 <div className="container mx-auto">
                     {navList}
-                    <Button
-                        variant="gradient"
-                        size="sm"
-                        fullWidth
-                        className="mb-2"
-                        onClick={handleLogout}
-                    >
-                        LOGOUT
-                    </Button>
+                    {isLogin ? (
+                        <Button
+                            variant="gradient"
+                            size="sm"
+                            fullWidth
+                            className="mb-2"
+                            onClick={handleLogout}
+                        >
+                            LOGOUT
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="gradient"
+                            size="sm"
+                            fullWidth
+                            className="mb-2"
+                            onClick={() => navigate('/auth')}
+                        >
+                            LOGIN
+                        </Button>
+                    )}
                 </div>
             </MobileNav>
         </Navbar>

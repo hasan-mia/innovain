@@ -1,6 +1,6 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import auth from '../api/auth';
 
 const AuthSlice = createSlice({
@@ -9,28 +9,31 @@ const AuthSlice = createSlice({
         isLoading: false,
         isError: false,
         errors: null,
-        isSuccess: false,
-        isAuth: false,
-        user: null,
+        isLogin: false,
+        isAdmin: false,
+        isRenter: false,
+        users: null,
         userInfo: null,
     },
     reducers: {
         setAuth: (state, action) => {
-            console.log(action);
-
-            if (session) {
-                // state.user = JSON.parse(helpers.decrypt(session));
-                state.isAuth = true;
+            const { payload } = action;
+            state.userInfo = payload;
+            state.isAdmin = payload.isAdmin;
+            state.isLoading = false;
+            state.isLogin = true;
+            if (!payload.isAdmin) {
+                state.isRenter = true;
+            } else {
+                state.isRenter = false;
             }
         },
         logOut: (state) => {
-            state.user = null;
             state.userInfo = null;
-            state.isSuccess = false;
             state.isLoading = false;
-            state.isSuccess = false;
-            state.isAuth = false;
+            state.isLogin = false;
             localStorage.removeItem('session');
+            toast.info('logout success');
         },
     },
     extraReducers: (builder) => {
@@ -81,18 +84,18 @@ const AuthSlice = createSlice({
         //     state.isError = true;
         // });
 
-        // User infos
-        builder.addCase(auth.userInfo.pending, (state) => {
+        // get all users
+        builder.addCase(auth.allUser.pending, (state) => {
             state.isLoading = true;
         });
 
-        builder.addCase(auth.userInfo.fulfilled, (state, action) => {
+        builder.addCase(auth.allUser.fulfilled, (state, action) => {
             const { data } = action.payload;
             state.isLoading = false;
-            state.userInfo = data;
+            state.users = data;
         });
 
-        builder.addCase(auth.userInfo.rejected, (state) => {
+        builder.addCase(auth.allUser.rejected, (state) => {
             state.isLoading = false;
             state.isError = true;
         });
