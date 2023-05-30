@@ -9,9 +9,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"lint": "eslint src/js",
 		"stop-win": "Taskkill /IM node.exe /F",
-		"stop-linux": "killall node",
-		"herou-postbuild": "YARN_PRODUCTION=false yarn install --prefix views && yarn run build --prefix views",
-		"postinstall": "cd ./views && yarn"
+		"stop-linux": "killall node"
 	},
 	"keywords": [],
 	"author": "",
