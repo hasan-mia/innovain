@@ -80,7 +80,7 @@ export default function Home() {
     useEffect(() => {
         if (token) {
             console.log(token);
-            navigate(-1, { replace: false });
+            navigate('/dashboard', { replace: true });
         } else {
             console.log('Null');
         }

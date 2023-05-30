@@ -1,5 +1,10 @@
 import React from 'react';
+import Users from '../components/users/Users';
 
 export default function AdminDashboard() {
-    return <div>AdminDashboard</div>;
+    return (
+        <div className="container">
+            <Users />
+        </div>
+    );
 }

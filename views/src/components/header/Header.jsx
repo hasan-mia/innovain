@@ -1,12 +1,19 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { Button, IconButton, MobileNav, Navbar, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { HiBars3 } from 'react-icons/hi2';
 import { MdClose } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Header() {
+    const dispatch = useDispatch();
+    const { logOut } = useSelector((state) => state.auth);
     const [openNav, setOpenNav] = useState(false);
+    // handle logout
+    const handleLogout = () => {
+        dispatch(logOut());
+    };
+
     useEffect(() => {
         window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
     }, []);
@@ -60,13 +67,14 @@ export default function Header() {
             <MobileNav open={openNav}>
                 <div className="container mx-auto">
                     {navList}
-                    <Button variant="gradient" size="sm" fullWidth className="mb-2">
-                        <Link
-                            to="/login"
-                            className="hover:text-white active:text-white focus:text-white no-underline"
-                        >
-                            Login
-                        </Link>
+                    <Button
+                        variant="gradient"
+                        size="sm"
+                        fullWidth
+                        className="mb-2"
+                        onClick={handleLogout}
+                    >
+                        LOGOUT
                     </Button>
                 </div>
             </MobileNav>

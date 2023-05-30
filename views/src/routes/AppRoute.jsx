@@ -1,4 +1,8 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/no-extraneous-dependencies */
+import { verify } from 'jsonwebtoken';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import AdminLayout from '../layouts/AdminLayout';
 import AppLayout from '../layouts/AppLayout';
@@ -9,7 +13,27 @@ import RenterDashboard from '../pages/RenterDashboard';
 import AdminRoute from './AdminRoute';
 import RenterRoute from './RenterRoute';
 
+const secretKey = process.env.REACT_APP_ACCESS_TOKEN_SECRET;
+
 export default function AppRoute() {
+    const dispatch = useDispatch();
+    const { setAuth } = useSelector((state) => state.auth);
+    const gettoken = (token) => {
+        let decodedToken;
+        try {
+            decodedToken = verify(token, secretKey);
+        } catch (error) {
+            console.log('Invalid token:', error.message);
+        }
+        return decodedToken;
+    };
+    useEffect(() => {
+        const session = localStorage.getItem('session');
+        console.log(session);
+        // if (session) {
+        //     dispatch(setAuth(session));
+        // }
+    }, []);
     return (
         <Routes>
             {/*= ==============PUblic Route======== */}

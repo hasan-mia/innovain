@@ -1,6 +1,6 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import helpers from '../../helper/helpers';
 import auth from '../api/auth';
 
 const AuthSlice = createSlice({
@@ -10,14 +10,17 @@ const AuthSlice = createSlice({
         isError: false,
         errors: null,
         isSuccess: false,
+        isAuth: false,
         user: null,
         userInfo: null,
     },
     reducers: {
-        authUser: (state) => {
-            const session = localStorage.getItem('session');
+        setAuth: (state, action) => {
+            console.log(action);
+
             if (session) {
-                state.user = JSON.parse(helpers.decrypt(session));
+                // state.user = JSON.parse(helpers.decrypt(session));
+                state.isAuth = true;
             }
         },
         logOut: (state) => {
@@ -26,6 +29,7 @@ const AuthSlice = createSlice({
             state.isSuccess = false;
             state.isLoading = false;
             state.isSuccess = false;
+            state.isAuth = false;
             localStorage.removeItem('session');
         },
     },
@@ -94,5 +98,5 @@ const AuthSlice = createSlice({
         });
     },
 });
-export const { authUser, logOut } = AuthSlice.actions;
+export const { setAuth, logOut } = AuthSlice.actions;
 export default AuthSlice.reducer;
