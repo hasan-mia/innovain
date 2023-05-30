@@ -33,10 +33,11 @@ export default function AppRoute() {
                     </RenterLayout>
                 }
             >
-                <Route path="dashboard" element={<RenterRoute />}>
-                    <Route path="/dashboard" element={<RenterDashboard />} />
+                <Route path="dashboard/renter" element={<RenterRoute />}>
+                    <Route path="/dashboard/renter" element={<RenterDashboard />} />
                 </Route>
             </Route>
+            <Route path="*" element={<Home />} />
         </Routes>
     );
 }

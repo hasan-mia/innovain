@@ -1,0 +1,60 @@
+/* eslint-disable import/no-extraneous-dependencies */
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    Input,
+    Typography,
+} from '@material-tailwind/react';
+
+export default function SingIn({ authController, setType, credentialHandler }) {
+    return (
+        <Card className="w-96">
+            {/* card header */}
+            <CardHeader
+                variant="gradient"
+                color="blue"
+                className="mb-4 grid h-28 place-items-center"
+            >
+                <Typography variant="h3" color="white">
+                    Sign In
+                </Typography>
+            </CardHeader>
+            {/* card body */}
+            <CardBody className="flex flex-col gap-4">
+                <Input
+                    label="Email"
+                    name="email"
+                    size="lg"
+                    onChange={(e) => credentialHandler(e.target.name, e.target.value)}
+                />
+                <Input
+                    label="Password"
+                    name="password"
+                    size="lg"
+                    onChange={(e) => credentialHandler(e.target.name, e.target.value)}
+                />
+            </CardBody>
+            {/* card footer */}
+            <CardFooter className="pt-0">
+                <Button variant="gradient" fullWidth>
+                    Sign In
+                </Button>
+                <Typography variant="small" className="mt-6 flex justify-center">
+                    Dont have an account?
+                    <Typography
+                        as="button"
+                        variant="small"
+                        color="blue"
+                        className="ml-1 font-bold"
+                        onClick={() => authController(setType('signup'))}
+                    >
+                        Sign up
+                    </Typography>
+                </Typography>
+            </CardFooter>
+        </Card>
+    );
+}
