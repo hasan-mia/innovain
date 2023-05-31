@@ -30,13 +30,13 @@ const singleUserByParams = async (req, res) => {
 const singleUserByMail = async (req, res) => {
   try {
     const userbyMail = await User.find({ email: req.body.email });
-   
+
     if (userbyMail.length > 0) {
       res.status(200).send({
         status: 200,
         success: true,
         message: `User found successfully`,
-        data: user,
+        data: userbyMail,
       });
     } else {
       res.status(404).send({
@@ -54,8 +54,7 @@ const singleUserByMail = async (req, res) => {
 // ========Get all User for admin============
 const allleUser = async (req, res) => {
   try {
-    const user = await User.findById(req.body.userId);
-    if (user.isAdmin) {
+    if (req.body.isAdmin) {
       const users = await User.find({});
       // const {password, updatedAt, ...others} = users
       res.status(200).send({

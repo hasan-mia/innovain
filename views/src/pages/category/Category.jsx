@@ -1,37 +1,28 @@
-import { Card, Typography } from '@material-tailwind/react';
+import { Card, Spinner, Typography } from '@material-tailwind/react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import category from '../../redux/api/category';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Action'];
 
-const TABLE_ROWS = [
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-];
-
 export default function Category() {
+    const { categories, isLoading } = useSelector((state) => state.category);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!categories) {
+            dispatch(category.allCategory());
+        }
+    });
+    if (isLoading) {
+        return (
+            <div className="flex justify-center py-5 gap-8">
+                <Spinner color="green" />
+                <p>Loading...</p>
+            </div>
+        );
+    }
     return (
         <div>
             <div className="flex justify-end">
@@ -63,19 +54,19 @@ export default function Category() {
                         </tr>
                     </thead>
                     <tbody>
-                        {TABLE_ROWS.map(({ serial, name, action }, index) => {
-                            const isLast = index === TABLE_ROWS.length - 1;
+                        {categories?.data.map((item, index) => {
+                            const isLast = index === categories.data.length - 1;
                             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
                             return (
-                                <tr key={name}>
+                                <tr key={item.id}>
                                     <td className={classes}>
                                         <Typography
                                             variant="small"
                                             color="blue-gray"
                                             className="font-normal"
                                         >
-                                            {serial}
+                                            {index + 1}
                                         </Typography>
                                     </td>
                                     <td className={classes}>
@@ -84,10 +75,10 @@ export default function Category() {
                                             color="blue-gray"
                                             className="font-normal"
                                         >
-                                            {name}
+                                            {item.title}
                                         </Typography>
                                     </td>
-                                    <td className={classes}>
+                                    <td className={`${classes} flex gap-2`}>
                                         <Typography
                                             as="a"
                                             href="#"
@@ -95,7 +86,16 @@ export default function Category() {
                                             color="blue"
                                             className="font-medium"
                                         >
-                                            {action}
+                                            Edit
+                                        </Typography>
+                                        <Typography
+                                            as="a"
+                                            href="#"
+                                            variant="small"
+                                            color="blue"
+                                            className="font-medium"
+                                        >
+                                            Delete
                                         </Typography>
                                     </td>
                                 </tr>

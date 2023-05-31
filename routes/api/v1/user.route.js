@@ -22,7 +22,7 @@ router.route("/:id").get(limiter, verifyJWT, UserController.singleUserByParams)
  * @apiDescription Get a single user
  * @apiPermission admin
  */
-router.route("/single").get(limiter, verifyJWT, UserController.singleUserByMail);
+router.route("/").get(limiter, verifyJWT, UserController.singleUserByMail);
 
 
 /**

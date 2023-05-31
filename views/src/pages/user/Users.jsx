@@ -1,98 +1,110 @@
-import { Card, Typography } from '@material-tailwind/react';
+import { Card, Spinner, Typography } from '@material-tailwind/react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import post from '../../redux/api/post';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Action'];
 
-const TABLE_ROWS = [
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-    {
-        serial: 1,
-        name: 'John Michael',
-        action: 'renter',
-    },
-];
-
 export default function Users() {
-    return (
-        <Card className="overflow-scroll h-full w-full">
-            <table className="w-full min-w-max table-auto text-left">
-                <thead>
-                    <tr>
-                        {TABLE_HEAD.map((head) => (
-                            <th
-                                key={head}
-                                className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
-                            >
-                                <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="font-normal leading-none opacity-70"
-                                >
-                                    {head}
-                                </Typography>
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {TABLE_ROWS.map(({ serial, name, action }, index) => {
-                        const isLast = index === TABLE_ROWS.length - 1;
-                        const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
+    const { posts, isLoading } = useSelector((state) => state.post);
+    const dispatch = useDispatch();
 
-                        return (
-                            <tr key={name}>
-                                <td className={classes}>
+    useEffect(() => {
+        if (!posts) {
+            dispatch(post.allPost());
+        }
+    });
+    if (isLoading) {
+        return (
+            <div className="flex justify-center py-5 gap-8">
+                <Spinner color="green" />
+                <p>Loading...</p>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            <div className="flex justify-end">
+                <Link
+                    to="/tool/add"
+                    className="my-1 p-1 text-sm rounded-sm bg-green-600 text-white uppercase"
+                >
+                    ADD Tools
+                </Link>
+            </div>
+            <Card className="overflow-scroll h-full w-full">
+                <table className="w-full min-w-max table-auto text-left">
+                    <thead>
+                        <tr>
+                            {TABLE_HEAD.map((head) => (
+                                <th
+                                    key={head}
+                                    className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                                >
                                     <Typography
                                         variant="small"
                                         color="blue-gray"
-                                        className="font-normal"
+                                        className="font-normal leading-none opacity-70"
                                     >
-                                        {serial}
+                                        {head}
                                     </Typography>
-                                </td>
-                                <td className={classes}>
-                                    <Typography
-                                        variant="small"
-                                        color="blue-gray"
-                                        className="font-normal"
-                                    >
-                                        {name}
-                                    </Typography>
-                                </td>
-                                <td className={classes}>
-                                    <Typography
-                                        as="a"
-                                        href="#"
-                                        variant="small"
-                                        color="blue"
-                                        className="font-medium"
-                                    >
-                                        {action}
-                                    </Typography>
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-        </Card>
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {posts?.data.map((item, index) => {
+                            const isLast = index === posts.data.length - 1;
+                            const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
+
+                            return (
+                                <tr key={item.id}>
+                                    <td className={classes}>
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal"
+                                        >
+                                            {index + 1}
+                                        </Typography>
+                                    </td>
+                                    <td className={classes}>
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal"
+                                        >
+                                            {item.title}
+                                        </Typography>
+                                    </td>
+                                    <td className={`${classes} flex gap-2`}>
+                                        <Typography
+                                            as="a"
+                                            href="#"
+                                            variant="small"
+                                            color="blue"
+                                            className="font-medium"
+                                        >
+                                            Edit
+                                        </Typography>
+                                        <Typography
+                                            as="a"
+                                            href="#"
+                                            variant="small"
+                                            color="blue"
+                                            className="font-medium"
+                                        >
+                                            Delete
+                                        </Typography>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </Card>
+        </div>
     );
 }
