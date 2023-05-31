@@ -1,6 +1,5 @@
 const verifyJWT = require("../../../middleware/verifyJWT");
 const CategoryController = require("../../../controllers/CategoryController");
-const imagesUpload = require("../../../middleware/imagesUpload");
 const limiter = require("../../../middleware/limiter");
 const router = require("express").Router()
 
@@ -9,14 +8,14 @@ const router = require("express").Router()
   * @apiDescription save product of user
   * @apiPermission anyone
  */
-router.route("/").post(limiter, verifyJWT, imagesUpload, CategoryController.categoryPublish)
+router.route("/").post(limiter, verifyJWT, CategoryController.categoryPublish)
 
 /**
   * @api {put} /update product post
   * @apiDescription update product of user
   * @apiPermission anyone
  */  
-router.route("/update/:id").put(limiter, verifyJWT, imagesUpload, CategoryController.categoryUpdate)
+router.route("/update/:id").put(limiter, verifyJWT, CategoryController.categoryUpdate)
 /**
  * @api {put} /delete category by id
  * @apiDescription delete category of user

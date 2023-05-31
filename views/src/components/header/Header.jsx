@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { Button, IconButton, MobileNav, Navbar, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { HiBars3 } from 'react-icons/hi2';
@@ -71,9 +72,29 @@ export default function Header() {
         </>
     );
 
+    // Navlist for users
+    const commonNavlist = () => (
+        <>
+            <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
+                <Link to="/" className="flex items-center uppercase">
+                    Home
+                </Link>
+            </Typography>
+            <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
+                <Link to="/dashboard" className="flex items-center uppercase">
+                    Dashboard
+                </Link>
+            </Typography>
+        </>
+    );
+
     const navList = (
         <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-            {isAdmin ? adminNavlist() : userNavlist()}
+            {isLogin && isAdmin
+                ? adminNavlist()
+                : isLogin && !isAdmin
+                ? userNavlist()
+                : commonNavlist()}
         </ul>
     );
 

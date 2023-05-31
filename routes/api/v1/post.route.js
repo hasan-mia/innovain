@@ -1,6 +1,5 @@
 const verifyJWT = require("../../../middleware/verifyJWT");
 const PostController = require("../../../controllers/PostController");
-const imagesUpload = require("../../../middleware/imagesUpload");
 const limiter = require("../../../middleware/limiter");
 const router = require("express").Router();
 

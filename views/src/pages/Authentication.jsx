@@ -1,18 +1,21 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import SingIn from '../components/auth/SingIn';
 import SingUp from '../components/auth/SingUp';
 import auth from '../redux/api/auth';
+import { setAuth } from '../redux/slice/AuthSlice';
 
 export default function Authentication() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [type, setType] = useState('signin');
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [loading, setLoading] = useState(false);
-    const [token, setToken] = useState(null);
+    const [payload, setPayload] = useState(null);
     // handle email, password credentials
     const credentialHandler = (name, data) => {
         if (name === 'email') {
@@ -32,8 +35,12 @@ export default function Authentication() {
         const res = await auth.registerUser(data);
         if (res.status === 201) {
             toast.success(`${res.data.message}`);
-            setToken(res.data.token);
+            localStorage.setItem('session', res.data.token);
+            const [headerBase64, payloadBase64, signature] = res.data.token.split('.');
+            const decodedPayload = atob(payloadBase64);
+            dispatch(setAuth(JSON.parse(decodedPayload)));
             setLoading(false);
+            navigate('/dashboard', { replace: false });
         } else if (res.status === 406) {
             toast.success(`${res.data.error}`);
             setLoading(false);
@@ -56,8 +63,12 @@ export default function Authentication() {
         const res = await auth.signinUser(data);
         if (res.status === 200) {
             toast.success(`${res.data.message}`);
-            setToken(res.data.token);
+            localStorage.setItem('session', res.data.token);
+            const [headerBase64, payloadBase64, signature] = res.data.token.split('.');
+            const decodedPayload = atob(payloadBase64);
+            dispatch(setAuth(JSON.parse(decodedPayload)));
             setLoading(false);
+            navigate('/dashboard', { replace: false });
         } else if (res.status === 406) {
             toast.success(`${res.data.error}`);
             setLoading(false);
@@ -75,13 +86,6 @@ export default function Authentication() {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        if (token) {
-            localStorage.setItem('session', token);
-            navigate('/dashboard', { replace: true });
-        }
-    }, [token, navigate]);
 
     // handle card
     const authController = () => {

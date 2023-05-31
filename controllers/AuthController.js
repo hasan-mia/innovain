@@ -23,6 +23,8 @@ const registerUser = async (req, res) => {
       const hashPassword = await bcrypt.hash(req.body.password, salt);
       // create new user
       const newUser = await new User({
+        isAdmn: false,
+        status: 0,
         email: req.body.email,
         password: hashPassword,
       });
@@ -31,6 +33,8 @@ const registerUser = async (req, res) => {
               // sign token and send it in response
       const token = await jwt.sign(
         {
+          isAdmn: false,
+          status: 0,
           email: req.body.email,
           password: hashPassword,
         },
