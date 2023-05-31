@@ -11,7 +11,7 @@ export default function Authentication() {
     const [type, setType] = useState('signin');
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [token, setToken] = useState(null);
     // handle email, password credentials
     const credentialHandler = (name, data) => {
@@ -23,6 +23,7 @@ export default function Authentication() {
     };
     // handle signup
     const handleSignUp = async () => {
+        setLoading(true);
         const data = {
             email,
             password: pass,
@@ -46,6 +47,7 @@ export default function Authentication() {
     };
     // handle  singin
     const handleSignIn = async () => {
+        setLoading(true);
         const data = {
             email,
             password: pass,

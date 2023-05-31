@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { logOut } from '../../redux/slice/AuthSlice';
 
 export default function Header() {
-    const { isLogin } = useSelector((state) => state.auth);
+    const { isAdmin, isLogin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [openNav, setOpenNav] = useState(false);
@@ -20,23 +20,50 @@ export default function Header() {
         window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
     }, []);
 
-    const navList = (
-        <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+    // Navlist for admin
+    const adminNavlist = () => (
+        <>
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
                 <Link to="/" className="flex items-center uppercase">
+                    Home
+                </Link>
+            </Typography>
+            <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
+                <Link to="/users" className="flex items-center uppercase">
                     Users
                 </Link>
             </Typography>
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
-                <Link to="/" className="flex items-center uppercase">
+                <Link to="/categories" className="flex items-center uppercase">
                     Category
                 </Link>
             </Typography>
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
-                <Link to="/" className="flex items-center uppercase">
+                <Link to="/tools" className="flex items-center uppercase">
                     Tools
                 </Link>
             </Typography>
+        </>
+    );
+    // Navlist for users
+    const userNavlist = () => (
+        <>
+            <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
+                <Link to="/" className="flex items-center uppercase">
+                    Home
+                </Link>
+            </Typography>
+            <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
+                <Link to="/tools" className="flex items-center uppercase">
+                    Tools
+                </Link>
+            </Typography>
+        </>
+    );
+
+    const navList = (
+        <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+            {isAdmin ? adminNavlist() : userNavlist()}
         </ul>
     );
 

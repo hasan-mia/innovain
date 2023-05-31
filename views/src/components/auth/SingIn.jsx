@@ -6,6 +6,7 @@ import {
     CardFooter,
     CardHeader,
     Input,
+    Spinner,
     Typography,
 } from '@material-tailwind/react';
 
@@ -16,6 +17,7 @@ export default function SingIn({
     email,
     pass,
     handleSignIn,
+    loading,
 }) {
     return (
         <Card className="w-96">
@@ -66,6 +68,12 @@ export default function SingIn({
                     </Typography>
                 </Typography>
             </CardFooter>
+            {loading && (
+                <div className="flex justify-center pb-5 gap-8">
+                    <Spinner color="green" />
+                    <p>Please Wait...</p>
+                </div>
+            )}
         </Card>
     );
 }

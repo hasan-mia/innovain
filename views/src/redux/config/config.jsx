@@ -1,9 +1,9 @@
 /* eslint-disable import/no-cycle */
-import helpers from '../../helper/helpers';
 
 const config = {};
 config.baseUrl = process.env.REACT_APP_BASE_URL;
 config.accesstoken = process.env.REACT_APP_ACCESS_TOKEN_SECRET;
+const session = localStorage.getItem('session');
 
 config.simpleHeader = {
     headers: {
@@ -14,7 +14,7 @@ config.simpleHeader = {
 config.basicHeader = {
     headers: {
         'content-type': 'application/json',
-        authorization: config.accesstoken,
+        authorization: `Bearer ${session}`,
     },
 };
 
@@ -23,19 +23,10 @@ config.paramsWithHeader = (param) => {
         params: param,
         headers: {
             'content-type': 'application/json',
-            authorization: config.accesstoken,
+            authorization: `Bearer ${session}`,
         },
     };
     return params;
-};
-
-config.token = () => {
-    const session = localStorage.getItem('session');
-    let user = null;
-    if (session) {
-        user = JSON.parse(helpers.decrypt(session));
-    }
-    return user.token;
 };
 
 export default config;

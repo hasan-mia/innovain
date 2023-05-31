@@ -5,21 +5,39 @@ import url from '../config/url';
 
 const name = 'post/';
 const post = {};
-post.addPost = createAsyncThunk(`${name}addPost`, async (data) => {
-    const res = await axios.post(url.addPost, { data }, config.basicHeader);
+// post.addPost = createAsyncThunk(`${name}addPost`, async (data) => {
+//     const res = await axios.post(url.addPost, { data }, config.basicHeader);
+//     return res;
+// });
+post.addPost = async (data) => {
+    const res = await axios
+        .post(url.addPost, data, config.basicHeader)
+        .then((response) => response)
+        .catch((err) => err.response);
     return res;
-});
-
-post.updatePost = createAsyncThunk(`${name}updatePost`, async (data, id) => {
-    const res = await axios.put(url.updatePost, { data }, config.paramsWithHeader({ id }));
+};
+// post.updatePost = createAsyncThunk(`${name}updatePost`, async (data, id) => {
+//     const res = await axios.put(url.updatePost, { data }, config.paramsWithHeader({ id }));
+//     return res;
+// });
+post.updatePost = async (data) => {
+    const res = await axios
+        .put(url.updatePost, data, config.basicHeader)
+        .then((response) => response)
+        .catch((err) => err.response);
     return res;
-});
-
-post.deletePost = createAsyncThunk(`${name}deletePost`, async (data, id) => {
-    const res = await axios.put(url.deletePost, { data }, config.paramsWithHeader({ id }));
+};
+// post.deletePost = createAsyncThunk(`${name}deletePost`, async (data, id) => {
+//     const res = await axios.put(url.deletePost, { data }, config.paramsWithHeader({ id }));
+//     return res;
+// });
+post.deletePost = async (data, id) => {
+    const res = await axios
+        .delete(url.deletePost, data, config.paramsWithHeader({ id }))
+        .then((response) => response)
+        .catch((err) => err.response);
     return res;
-});
-
+};
 post.allPost = createAsyncThunk(`${name}allPost`, async () => {
     const res = await axios.get(url.allPost, config.basicHeader);
     return res;
