@@ -30,7 +30,7 @@ router.route("/delete/:id").delete(limiter, verifyJWT, PostController.postDelete
  * @apiDescription single post of user
  * @apiPermission anyone
  */
-router.route("/:id").get(limiter, verifyJWT, PostController.getPost);
+router.route("/:id").get(limiter, PostController.getPost);
 
 
 /**
@@ -38,6 +38,6 @@ router.route("/:id").get(limiter, verifyJWT, PostController.getPost);
  * @apiDescription all post of user
  * @apiPermission anyone
  */
-router.route("/").get(limiter, verifyJWT, PostController.getAllPost);
+router.route("/").get(limiter, PostController.getAllPost);
 
 module.exports = router;

@@ -8,21 +8,21 @@ const limiter = require("../../../middleware/limiter");
   * @apiDescription Get all user
   * @apiPermission admin
 */ 
-router.route("/all").get(limiter, verifyJWT, UserController.allleUser)
+router.route("/all").get(limiter, UserController.allleUser)
 
 /**
   * @api {get} get a single user
   * @apiDescription Get a single user
   * @apiPermission admin
 */ 
-router.route("/:id").get(limiter, verifyJWT, UserController.singleUserByParams)
+router.route("/:id").get(limiter, UserController.singleUserByParams)
 
 /**
  * @api {get} get a single user by params
  * @apiDescription Get a single user
  * @apiPermission admin
  */
-router.route("/").get(limiter, verifyJWT, UserController.singleUserByMail);
+router.route("/").get(limiter, UserController.singleUserByMail);
 
 
 /**
