@@ -31,6 +31,13 @@ router.route("/delete/:id").delete(limiter, verifyJWT, CategoryController.delete
  */
 router.route("/").get(limiter, verifyJWT, CategoryController.getAllCategory);
 
+/**
+ * @api {get} /get single category
+ * @apiDescription single category 
+ * @apiPermission anyone
+ */
+router.route("/:id").get(limiter, verifyJWT, CategoryController.getCategory);
+
 
 
 module.exports = router;

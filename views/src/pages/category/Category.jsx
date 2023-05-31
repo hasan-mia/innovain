@@ -36,10 +36,10 @@ export default function Category() {
         <div>
             <div className="flex justify-end">
                 <Link
-                    to="/category/add"
+                    to="/room/add"
                     className="my-1 p-1 text-sm rounded-sm bg-green-600 text-white uppercase"
                 >
-                    ADD CATEGORY
+                    ADD room
                 </Link>
             </div>
             <Card className="overflow-scroll h-full w-full">

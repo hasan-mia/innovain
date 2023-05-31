@@ -1,7 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-unused-vars */
-
 import { Card, Input, Spinner } from '@material-tailwind/react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,7 +6,7 @@ import { toast } from 'react-toastify';
 import category from '../../redux/api/category';
 
 export default function Edit() {
-    const { isAdmin, isLogin } = useSelector((state) => state.auth);
+    const { isAdmin } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');

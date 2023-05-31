@@ -29,13 +29,18 @@ export default function Header() {
                 </Link>
             </Typography>
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
+                <Link to="/dashboard" className="flex items-center uppercase">
+                    Dashboard
+                </Link>
+            </Typography>
+            <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
                 <Link to="/users" className="flex items-center uppercase">
                     Users
                 </Link>
             </Typography>
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
-                <Link to="/categories" className="flex items-center uppercase">
-                    Category
+                <Link to="/rooms" className="flex items-center uppercase">
+                    Room
                 </Link>
             </Typography>
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
@@ -51,6 +56,11 @@ export default function Header() {
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
                 <Link to="/" className="flex items-center uppercase">
                     Home
+                </Link>
+            </Typography>
+            <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
+                <Link to="/dashboard" className="flex items-center uppercase">
+                    Dashboard
                 </Link>
             </Typography>
             <Typography as="li" variant="small" color="blue-gray" className="p-1 font-normal">
