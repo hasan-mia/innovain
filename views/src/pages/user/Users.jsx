@@ -1,23 +1,19 @@
 import { Card, Spinner, Typography } from '@material-tailwind/react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import auth from '../../redux/api/auth';
 
-const TABLE_HEAD = ['Serial', 'Name', 'Action'];
+const TABLE_HEAD = ['Serial', 'Name', 'Status', 'Action'];
 
 export default function Users() {
-    const { users, isAdmin, isLoading } = useSelector((state) => state.auth);
+    const { users, isLoading } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const data = {
-            isAdmin,
-        };
         if (!users) {
-            dispatch(auth.allUser(data));
+            dispatch(auth.allUser());
         }
-    }, [users, dispatch, isAdmin]);
+    }, [users, dispatch]);
     if (isLoading) {
         return (
             <div className="flex justify-center py-5 gap-8">
@@ -26,18 +22,9 @@ export default function Users() {
             </div>
         );
     }
-
     return (
         <div>
-            <div className="flex justify-end">
-                <Link
-                    to="/tool/add"
-                    className="my-1 p-1 text-sm rounded-sm bg-green-600 text-white uppercase"
-                >
-                    ADD Tools
-                </Link>
-            </div>
-            <Card className="overflow-scroll h-full w-full">
+            <Card className="overflow-scroll h-full w-full my-5">
                 <table className="w-full min-w-max table-auto text-left">
                     <thead>
                         <tr>
@@ -79,7 +66,16 @@ export default function Users() {
                                             color="blue-gray"
                                             className="font-normal"
                                         >
-                                            {item.title}
+                                            {item.email}
+                                        </Typography>
+                                    </td>
+                                    <td className={classes}>
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="font-normal"
+                                        >
+                                            {item.status === 1 ? 'Access' : 'No Access'}
                                         </Typography>
                                     </td>
                                     <td className={`${classes} flex gap-2`}>
@@ -100,6 +96,15 @@ export default function Users() {
                                             className="font-medium"
                                         >
                                             Delete
+                                        </Typography>
+                                        <Typography
+                                            as="a"
+                                            href="#"
+                                            variant="small"
+                                            color="blue"
+                                            className="font-medium"
+                                        >
+                                            Status
                                         </Typography>
                                     </td>
                                 </tr>
