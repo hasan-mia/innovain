@@ -11,8 +11,11 @@ export default function Users() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        const data = {
+            isAdmin,
+        };
         if (!users) {
-            dispatch(auth.allUser(isAdmin));
+            dispatch(auth.allUser(data));
         }
     }, [users, dispatch, isAdmin]);
     if (isLoading) {

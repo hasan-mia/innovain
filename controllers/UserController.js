@@ -54,21 +54,22 @@ const singleUserByMail = async (req, res) => {
 // ========Get all User for admin============
 const allleUser = async (req, res) => {
   try {
-    if (req.body.isAdmin) {
       const users = await User.find({});
-      // const {password, updatedAt, ...others} = users
+       if (users) {
       res.status(200).send({
         status: 200,
         success: true,
         message: `user found successfully`,
         data: users,
-      });
+      })
     } else {
-      return res
+      res
         .status(403)
-        .send({ success: false, message: "forbiden access", data: null });
+        .send({ status: 403, success: false, message: "forbiden access" });
     }
-  } catch (error) {
+      
+    } 
+  catch (error) {
     return res.status(500).send(error);
   }
 };

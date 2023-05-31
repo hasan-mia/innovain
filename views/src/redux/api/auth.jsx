@@ -44,8 +44,9 @@ auth.userInfo = createAsyncThunk(`${name}userInfo`, async (email) => {
     return res;
 });
 
-auth.allUser = createAsyncThunk(`${name}allUser`, async (isAdmin) => {
-    const res = await axios.get(url.allUser, { isAdmin }, config.basicHeader);
+auth.allUser = createAsyncThunk(`${name}allUser`, async (data) => {
+    const res = await axios.get(url.allUser, data, config.basicHeader);
+    console.log(res);
     return res;
 });
 
