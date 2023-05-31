@@ -14,7 +14,8 @@ export default function Category() {
         if (!categories) {
             dispatch(category.allCategory());
         }
-    });
+    }, [dispatch, categories]);
+    console.log(categories);
     if (isLoading) {
         return (
             <div className="flex justify-center py-5 gap-8">

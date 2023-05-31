@@ -14,7 +14,7 @@ export default function Tools() {
         if (!posts) {
             dispatch(post.allPost());
         }
-    });
+    }, [posts, dispatch]);
     if (isLoading) {
         return (
             <div className="flex justify-center py-5 gap-8">

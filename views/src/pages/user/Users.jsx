@@ -2,19 +2,19 @@ import { Card, Spinner, Typography } from '@material-tailwind/react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import post from '../../redux/api/post';
+import auth from '../../redux/api/auth';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Action'];
 
 export default function Users() {
-    const { posts, isLoading } = useSelector((state) => state.post);
+    const { users, isAdmin, isLoading } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!posts) {
-            dispatch(post.allPost());
+        if (!users) {
+            dispatch(auth.allUser(isAdmin));
         }
-    });
+    }, [users, dispatch, isAdmin]);
     if (isLoading) {
         return (
             <div className="flex justify-center py-5 gap-8">
@@ -55,8 +55,8 @@ export default function Users() {
                         </tr>
                     </thead>
                     <tbody>
-                        {posts?.data.map((item, index) => {
-                            const isLast = index === posts.data.length - 1;
+                        {users?.data.map((item, index) => {
+                            const isLast = index === users.data.length - 1;
                             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
                             return (
