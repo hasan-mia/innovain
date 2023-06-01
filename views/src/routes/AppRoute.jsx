@@ -5,9 +5,9 @@ import AdminDashboard from '../pages/AdminDashboard';
 import Authentication from '../pages/Authentication';
 import Error from '../pages/Error';
 import Home from '../pages/Home';
-import AddCategory from '../pages/category/Add';
-import Category from '../pages/category/Category';
-import EditCategory from '../pages/category/Edit';
+import AddRoom from '../pages/room/Add';
+import EditRoom from '../pages/room/Edit';
+import Room from '../pages/room/Room';
 import AddTool from '../pages/tools/Add';
 import EditTool from '../pages/tools/Edit';
 import Tools from '../pages/tools/Tools';
@@ -29,9 +29,9 @@ export default function AppRoute() {
                 {/* user */}
                 <Route path="/users" element={<Users />} />
                 {/* category */}
-                <Route path="/rooms" element={<Category />} />
-                <Route path="/room/add" element={<AddCategory />} />
-                <Route path="/room/edit/:id" element={<EditCategory />} />
+                <Route path="/rooms" element={<Room />} />
+                <Route path="/room/add" element={<AddRoom />} />
+                <Route path="/room/edit/:id" element={<EditRoom />} />
                 {/* Tools */}
                 <Route path="/tools" element={<Tools />} />
                 <Route path="/tool/add" element={<AddTool />} />

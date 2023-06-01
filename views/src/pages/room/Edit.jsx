@@ -49,7 +49,7 @@ export default function Edit() {
         <Card className="overflow-scroll h-full w-full">
             <div className="my-4 px-0 lg:px-2">
                 <h1 className="text-center text-sm lg:text-md py-1 font-semibold uppercase text-white bg-purple-600">
-                    Add Category
+                    Add Room
                 </h1>
                 <div className="flex flex-col gap-2 my-4">
                     <Input

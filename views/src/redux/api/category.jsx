@@ -34,7 +34,7 @@ category.updateCategory = async (data, id) => {
 // });
 category.deleteCategory = async (data, id) => {
     const res = await axios
-        .delete(url.deleteCategory, data, config.paramsWithHeader({ id }))
+        .delete(`${url.deleteCategory}/${id}`, { data }, config.basicHeader)
         .then((response) => response)
         .catch((err) => err.response);
     return res;

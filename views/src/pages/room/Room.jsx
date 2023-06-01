@@ -1,21 +1,40 @@
+/* eslint-disable no-underscore-dangle */
 import { Card, Spinner, Typography } from '@material-tailwind/react';
 import { useEffect } from 'react';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import category from '../../redux/api/category';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Action'];
 
-export default function Category() {
+export default function Room() {
     const { categories, isLoading } = useSelector((state) => state.category);
+    const { isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+
+    // handle edit
+    const handleEdit = (id) => {
+        console.log(id);
+    };
+
+    // handle Delete
+    const handleDelete = async (id) => {
+        if (isAdmin) {
+            const res = await category.deleteCategory(isAdmin, id);
+            console.log(res);
+        } else {
+            toast.info('Only admin can change');
+        }
+    };
 
     useEffect(() => {
         if (!categories) {
             dispatch(category.allCategory());
         }
     }, [dispatch, categories]);
-    console.log(categories);
+
     if (isLoading) {
         return (
             <div className="flex justify-center py-5 gap-8">
@@ -60,7 +79,7 @@ export default function Category() {
                             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
                             return (
-                                <tr key={item.id}>
+                                <tr key={item._id}>
                                     <td className={classes}>
                                         <Typography
                                             variant="small"
@@ -80,24 +99,20 @@ export default function Category() {
                                         </Typography>
                                     </td>
                                     <td className={`${classes} flex gap-2`}>
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
+                                        <button
+                                            type="button"
+                                            className="text-green-500"
+                                            onClick={() => handleEdit(item._id)}
                                         >
-                                            Edit
-                                        </Typography>
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
+                                            <MdEdit />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="text-red-500"
+                                            onClick={() => handleDelete(item._id)}
                                         >
-                                            Delete
-                                        </Typography>
+                                            <MdDelete />
+                                        </button>
                                     </td>
                                 </tr>
                             );

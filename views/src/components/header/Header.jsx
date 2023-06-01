@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { Button, IconButton, MobileNav, Navbar, Typography } from '@material-tailwind/react';
+import { Button, Collapse, IconButton, Navbar, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { HiBars3 } from 'react-icons/hi2';
 import { MdClose } from 'react-icons/md';
@@ -101,14 +101,9 @@ export default function Header() {
     return (
         <Navbar className="mx-auto py-2 lg:py-4 rounded-none shadow-none border-b-2 border-b-blue-gray-50">
             <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
-                <Typography
-                    as="a"
-                    href="#"
-                    variant="small"
-                    className="mr-4 cursor-pointer py-1.5 font-normal"
-                >
-                    <Link to="/">INNOVAINFO</Link>
-                </Typography>
+                <Link to="/" className="text-purple-500 font-semibold">
+                    INNOVA INFO
+                </Link>
                 <div className="hidden lg:block">{navList}</div>
                 <div className="hidden lg:inline-block">
                     {isLogin ? (
@@ -142,7 +137,7 @@ export default function Header() {
                     {openNav ? <MdClose className="text-2xl" /> : <HiBars3 className="text-2xl" />}
                 </IconButton>
             </div>
-            <MobileNav open={openNav}>
+            <Collapse open={openNav}>
                 <div className="container mx-auto">
                     {navList}
                     {isLogin ? (
@@ -167,7 +162,7 @@ export default function Header() {
                         </Button>
                     )}
                 </div>
-            </MobileNav>
+            </Collapse>
         </Navbar>
     );
 }
