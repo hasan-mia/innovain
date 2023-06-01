@@ -1,14 +1,13 @@
 import { Card, Input, Spinner } from '@material-tailwind/react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import useAuthRequire from '../../hooks/useAuthRequire';
 import category from '../../redux/api/category';
 
 export default function Edit() {
-    useAuthRequire();
     const { isAdmin } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
@@ -19,6 +18,10 @@ export default function Edit() {
     };
 
     const categoryHandle = async () => {
+        if (title === '') {
+            toast.success(`Title is required`);
+            return;
+        }
         setLoading(true);
         const categoryData = {
             title,
@@ -29,7 +32,8 @@ export default function Edit() {
         if (res.status === 200) {
             toast.success(`${res.data.message}`);
             setLoading(false);
-            navigate('/category', { replace: false });
+            dispatch(category.allCategory());
+            navigate('/rooms', { replace: false });
         } else if (res.status === 406) {
             toast.success(`${res.data.error}`);
             setLoading(false);

@@ -3,11 +3,9 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import useAuthRequire from '../../hooks/useAuthRequire';
 import category from '../../redux/api/category';
 
 export default function Add() {
-    useAuthRequire();
     const { isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -20,6 +18,10 @@ export default function Add() {
     };
 
     const categoryHandle = async () => {
+        if (title === '') {
+            toast.success(`Title is required`);
+            return;
+        }
         setLoading(true);
         const categoryData = {
             title,

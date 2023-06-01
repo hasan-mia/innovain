@@ -1,14 +1,17 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import SingIn from '../components/auth/SingIn';
 import SingUp from '../components/auth/SingUp';
+import useAuth from '../hooks/useAuth';
 import auth from '../redux/api/auth';
 import { setAuth } from '../redux/slice/AuthSlice';
 
 export default function Authentication() {
+    useAuth();
+    const { isLogin } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [type, setType] = useState('signin');
@@ -86,6 +89,12 @@ export default function Authentication() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (isLogin) {
+            navigate(-1, { replace: false });
+        }
+    }, [isLogin, navigate]);
 
     // handle card
     const authController = () => {

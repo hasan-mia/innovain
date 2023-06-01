@@ -37,53 +37,6 @@ const AuthSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        // // === sign up attempt=====
-        // builder.addCase(auth.signUp.pending, (state) => {
-        //     state.isLoading = true;
-        // });
-
-        // builder.addCase(auth.signUp.fulfilled, (state, action) => {
-        //     state.isLoading = false;
-        //     state.isError = false;
-        //     const { status, data } = action.payload;
-        //     if (status === 201) {
-        //         state.isSuccess = true;
-        //         localStorage.setItem('session', data.token);
-        //         toast.success(`${data.message}`);
-        //     } else {
-        //         toast.error('something went wrong');
-        //     }
-        // });
-
-        // builder.addCase(auth.signUp.rejected, (state) => {
-        //     state.isLoading = false;
-        //     state.isError = true;
-        // });
-
-        // // === sign In attempt=====
-        // builder.addCase(auth.signIn.pending, (state) => {
-        //     state.isLoading = true;
-        //     state.isError = false;
-        // });
-
-        // builder.addCase(auth.signIn.fulfilled, (state, action) => {
-        //     state.isLoading = false;
-        //     state.isError = false;
-        //     const { status, data } = action.payload;
-        //     if (status === 200) {
-        //         state.isSuccess = true;
-        //         localStorage.setItem('session', data.token);
-        //         toast.success(`${data.message}`);
-        //     } else {
-        //         toast.error('Please enter valid code');
-        //     }
-        // });
-
-        // builder.addCase(auth.signIn.rejected, (state) => {
-        //     state.isLoading = false;
-        //     state.isError = true;
-        // });
-
         // get all users
         builder.addCase(auth.allUser.pending, (state) => {
             state.isLoading = true;

@@ -4,12 +4,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import useAuthRequire from '../../hooks/useAuthRequire';
 import category from '../../redux/api/category';
 import post from '../../redux/api/post';
 
 export default function Add() {
-    useAuthRequire();
     const { isAdmin } = useSelector((state) => state.auth);
     const { categories } = useSelector((state) => state.category);
     const dispatch = useDispatch();
@@ -25,6 +23,14 @@ export default function Add() {
     };
 
     const categoryHandle = async () => {
+        if (title === '') {
+            toast.success(`Title is required`);
+            return;
+        }
+        if (selectedValue === '') {
+            toast.success(`Room is required`);
+            return;
+        }
         setLoading(true);
         const toolData = {
             title,
@@ -75,13 +81,15 @@ export default function Add() {
                         name="title"
                         size="lg"
                         onChange={(e) => credentialHandler(e.target.name, e.target.value)}
+                        required
                     />
                     <Select
                         label="Select Room"
                         value={selectedValue}
                         onChange={(value) => setSelectedValue(value)}
+                        required
                     >
-                        {categories?.data.map((item) => (
+                        {categories?.data?.map((item) => (
                             <Option key={item._id} value={item?._id}>
                                 {item?.title}
                             </Option>

@@ -4,21 +4,19 @@ import { useEffect } from 'react';
 import { FiUserCheck, FiUserMinus, FiUserPlus } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import useAuthRequire from '../../hooks/useAuthRequire';
 import auth from '../../redux/api/auth';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Status', 'Action'];
 
 export default function Users() {
-    useAuthRequire();
-    const { users, isLoading } = useSelector((state) => state.auth);
+    const { users, isLoading, isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     // handle Status
     const handleStatus = async (status, id) => {
         if (status === 1) {
             const data = {
-                isAdmin: true,
+                isAdmin,
                 status,
             };
             const res = await auth.updateStatus(data, id);

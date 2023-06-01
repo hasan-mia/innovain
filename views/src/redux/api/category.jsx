@@ -5,7 +5,7 @@ import url from '../config/url';
 
 const name = 'category/';
 const category = {};
-
+// publish category
 category.addCategory = async (data) => {
     const res = await axios
         .post(url.addCategory, data, config.basicHeader)
@@ -13,7 +13,7 @@ category.addCategory = async (data) => {
         .catch((err) => err.response);
     return res;
 };
-
+// update category
 category.updateCategory = async (data, id) => {
     const res = await axios
         .put(`${url.deleteCategory}/${id}`, data, config.basicHeader)
@@ -21,16 +21,15 @@ category.updateCategory = async (data, id) => {
         .catch((err) => err.response);
     return res;
 };
-
-category.deleteCategory = async (data, id) => {
-    console.log(data);
+// delete category
+category.deleteCategory = async (payload, id) => {
     const res = await axios
-        .delete(`${url.deleteCategory}/${id}`, data, config.basicHeader)
+        .delete(`${url.deleteCategory}/${id}`, config.payloadWithHeader(payload))
         .then((response) => response)
         .catch((err) => err.response);
     return res;
 };
-
+// get all category
 category.allCategory = createAsyncThunk(`${name}allCategory`, async () => {
     const res = await axios.get(url.allCategory, config.basicHeader);
     return res;

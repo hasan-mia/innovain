@@ -4,13 +4,12 @@ import { useEffect } from 'react';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import useAuthRequire from '../../hooks/useAuthRequire';
+import { toast } from 'react-toastify';
 import post from '../../redux/api/post';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Action'];
 
 export default function Tools() {
-    useAuthRequire();
     const { posts, isLoading } = useSelector((state) => state.post);
     const { isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
@@ -22,16 +21,15 @@ export default function Tools() {
     // handle Delete
     const handleDelete = async (id) => {
         const data = {
-            isAdmin: true,
+            isAdmin,
         };
-        const res = await post.deleteCategory(data, id);
-        console.log(res);
-        // if (res.status === 200) {
-        //     toast.success(`Permition granted`);
-        //     dispatch(category.allCategory());
-        // } else {
-        //     toast.erros(`${res.data.error}`);
-        // }
+        const res = await post.deletePost(data, id);
+        if (res.status === 200) {
+            toast.success(`${res.data.message}`);
+            dispatch(post.allPost());
+        } else {
+            toast.erros(`${res.data.error}`);
+        }
     };
     useEffect(() => {
         if (!posts) {
@@ -86,7 +84,7 @@ export default function Tools() {
                             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
                             return (
-                                <tr key={item.id}>
+                                <tr key={item._id}>
                                     <td className={classes}>
                                         <Typography
                                             variant="small"

@@ -45,30 +45,25 @@ const postUpdate = async (req, res) => {
 };
 
 const postDelete = async (req, res) => {
-  try {
-     if (req.body.isAdmin) {
+  console.log(req.params.id, req.body.isAdmin)
+   if (req.body.isAdmin) {
+    try {
       await Post.findByIdAndDelete({ _id: req.params.id });
       res.status(200).send({
         status: 200,
-        success: true,
-        message: "tool deleted successfully",
-      });
-    if (!post) {
-      res.status(404).send({ status: 404, success: false, message: "post not found" })
-    }else{
-      res
-        .status(200)
-        .send({
-          status: 200,
           success: true,
           message: "delete tool successfully",
-        });
+      });
+
+    } catch (error) {
+      return res.status(500).send(error);
     }
-  }else{
-    res.status(403).send({ status: 403, success: false, message: "only admin can delete" });
-  }
-  } catch (error) {
-    res.status(500).send(error)
+  } else {
+    return res.status(403).send({
+      status: 403,
+      success: false,
+      message: "only admin can delete",
+    });
   }
 }
 

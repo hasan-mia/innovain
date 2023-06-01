@@ -3,7 +3,6 @@ const config = {};
 config.baseUrl = process.env.REACT_APP_BASE_URL;
 config.accesstoken = process.env.REACT_APP_ACCESS_TOKEN_SECRET;
 config.token = process.env.REACT_APP_AUTHORIZATION;
-console.log(config.token);
 const session = localStorage.getItem('session');
 
 config.simpleHeader = {
@@ -21,14 +20,14 @@ config.basicHeader = {
     },
 };
 
-config.paramsWithHeader = (param) => {
+config.payloadWithHeader = (payload) => {
     const params = {
-        params: param,
         headers: {
             'Content-type': 'application/json',
             'Access-Control-Allow-Origin': '*',
             Authorization: `Bearer ${config.token}`,
         },
+        data: JSON.stringify(payload),
     };
     return params;
 };

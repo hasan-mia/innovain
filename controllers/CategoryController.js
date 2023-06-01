@@ -70,7 +70,7 @@ const deleteCategory = async (req, res) => {
     return res.status(403).send({
       status: 403,
       success: false,
-      message: "category can't delete",
+      message: "only admin can delete",
     });
   }
 };

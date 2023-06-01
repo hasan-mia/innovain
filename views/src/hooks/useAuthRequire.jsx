@@ -9,10 +9,10 @@ const useAuthRequire = (session) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!userInfo) {
+        if (!userInfo || session) {
             navigate('/auth', { replace: true });
         }
-    }, [navigate, userInfo]);
+    }, [navigate, userInfo, session]);
 };
 
 export default useAuthRequire;
