@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import { Card, Spinner, Typography } from '@material-tailwind/react';
 import { useEffect } from 'react';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import useAuthRequire from '../../hooks/useAuthRequire';
@@ -12,7 +14,25 @@ export default function Tools() {
     const { posts, isLoading } = useSelector((state) => state.post);
     const { isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+    // handle edit
+    const handleEdit = (id) => {
+        console.log(id);
+    };
 
+    // handle Delete
+    const handleDelete = async (id) => {
+        const data = {
+            isAdmin: true,
+        };
+        const res = await post.deleteCategory(data, id);
+        console.log(res);
+        // if (res.status === 200) {
+        //     toast.success(`Permition granted`);
+        //     dispatch(category.allCategory());
+        // } else {
+        //     toast.erros(`${res.data.error}`);
+        // }
+    };
     useEffect(() => {
         if (!posts) {
             dispatch(post.allPost());
@@ -86,24 +106,20 @@ export default function Tools() {
                                         </Typography>
                                     </td>
                                     <td className={`${classes} flex gap-2`}>
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
+                                        <button
+                                            type="button"
+                                            className="text-green-500"
+                                            onClick={() => handleEdit(item._id)}
                                         >
-                                            Edit
-                                        </Typography>
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
+                                            <MdEdit />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="text-red-500"
+                                            onClick={() => handleDelete(item._id)}
                                         >
-                                            Delete
-                                        </Typography>
+                                            <MdDelete />
+                                        </button>
                                     </td>
                                 </tr>
                             );

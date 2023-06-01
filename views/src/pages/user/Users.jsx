@@ -4,11 +4,13 @@ import { useEffect } from 'react';
 import { FiUserCheck, FiUserMinus, FiUserPlus } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import useAuthRequire from '../../hooks/useAuthRequire';
 import auth from '../../redux/api/auth';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Status', 'Action'];
 
 export default function Users() {
+    useAuthRequire();
     const { users, isLoading } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
@@ -110,12 +112,10 @@ export default function Users() {
                                         >
                                             {item.status === 1 ? (
                                                 <span className="text-green-500">
-                                                    {' '}
                                                     <FiUserCheck size={20} />
                                                 </span>
                                             ) : (
                                                 <span className="text-red-500">
-                                                    {' '}
                                                     <FiUserMinus size={20} />
                                                 </span>
                                             )}

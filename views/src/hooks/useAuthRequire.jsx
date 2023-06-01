@@ -5,13 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 const useAuthRequire = (session) => {
     const { userInfo } = useSelector((state) => state.auth);
-    console.log(userInfo);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!userInfo) {
-            navigate('/auth', { replace: false });
+            navigate('/auth', { replace: true });
         }
     }, [navigate, userInfo]);
 };

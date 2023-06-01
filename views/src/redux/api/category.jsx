@@ -5,10 +5,7 @@ import url from '../config/url';
 
 const name = 'category/';
 const category = {};
-// category.addCategory = createAsyncThunk(`${name}addCategory`, async (data) => {
-//     const res = await axios.post(url.addCategory, data, config.basicHeader);
-//     return res;
-// });
+
 category.addCategory = async (data) => {
     const res = await axios
         .post(url.addCategory, data, config.basicHeader)
@@ -16,25 +13,19 @@ category.addCategory = async (data) => {
         .catch((err) => err.response);
     return res;
 };
-// category.updateCategory = createAsyncThunk(`${name}updateCategory`, async (data, id) => {
-//     const res = await axios.put(url.updateCategory, { data }, config.paramsWithHeader({ id }));
-//     return res;
-// });
+
 category.updateCategory = async (data, id) => {
     const res = await axios
-        .put(url.updateCategory, data, config.paramsWithHeader({ id }))
+        .put(`${url.deleteCategory}/${id}`, data, config.basicHeader)
         .then((response) => response)
         .catch((err) => err.response);
     return res;
 };
 
-// category.deleteCategory = createAsyncThunk(`${name}deleteCategory`, async (data, id) => {
-//     const res = await axios.put(url.deleteCategory, { data }, config.paramsWithHeader({ id }));
-//     return res;
-// });
 category.deleteCategory = async (data, id) => {
+    console.log(data);
     const res = await axios
-        .delete(`${url.deleteCategory}/${id}`, { data }, config.basicHeader)
+        .delete(`${url.deleteCategory}/${id}`, data, config.basicHeader)
         .then((response) => response)
         .catch((err) => err.response);
     return res;

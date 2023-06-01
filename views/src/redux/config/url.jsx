@@ -12,7 +12,7 @@ url.userInfo = `${config.baseUrl}api/v1/user`; // email with body [get] or param
 url.addCategory = `${config.baseUrl}api/v1/category`; // [post]
 url.updateCategory = `${config.baseUrl}api/v1/category/update`; // id with parameters [put]
 url.deleteCategory = `${config.baseUrl}api/v1/category/delete`; // id with parameters [delete]
-url.allCategory = `${config.baseUrl}api/v1/category`;
+url.allCategory = `${config.baseUrl}api/v1/category/all`;
 // post
 url.addPost = `${config.baseUrl}api/v1/post`; // [post]
 url.updatePost = `${config.baseUrl}api/v1/post/update`; // id with parameters  [put]

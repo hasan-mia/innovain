@@ -1,15 +1,23 @@
-import { Card, Input, Spinner } from '@material-tailwind/react';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+/* eslint-disable no-underscore-dangle */
+import { Card, Input, Option, Select, Spinner } from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import useAuthRequire from '../../hooks/useAuthRequire';
 import category from '../../redux/api/category';
+import post from '../../redux/api/post';
 
 export default function Add() {
+    useAuthRequire();
     const { isAdmin } = useSelector((state) => state.auth);
+    const { categories } = useSelector((state) => state.category);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
+    const [selectedValue, setSelectedValue] = useState('');
+
     const credentialHandler = (name, data) => {
         if (name === 'title') {
             setTitle(data);
@@ -18,16 +26,18 @@ export default function Add() {
 
     const categoryHandle = async () => {
         setLoading(true);
-        const categoryData = {
+        const toolData = {
             title,
             isAdmin,
+            catId: selectedValue,
         };
 
-        const res = await category.addCategory(categoryData);
+        const res = await post.addPost(toolData);
         if (res.status === 200) {
             toast.success(`${res.data.message}`);
             setLoading(false);
-            navigate('/category', { replace: false });
+            dispatch(post.allPost());
+            navigate('/tools', { replace: false });
         } else if (res.status === 406) {
             toast.success(`${res.data.error}`);
             setLoading(false);
@@ -45,21 +55,38 @@ export default function Add() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (!categories) {
+            dispatch(category.allCategory());
+        }
+    }, [dispatch, categories]);
     return (
         <Card className="overflow-scroll h-full w-full">
             <div className="my-4 px-0 lg:px-2">
                 <h1 className="text-center text-sm lg:text-md py-1 font-semibold uppercase text-white bg-purple-600">
-                    Add Category
+                    Add Tool
                 </h1>
                 <div className="flex flex-col gap-2 my-4">
                     <Input
                         label="Title"
-                        type="tex"
+                        type="text"
                         value={title}
                         name="title"
                         size="lg"
                         onChange={(e) => credentialHandler(e.target.name, e.target.value)}
                     />
+                    <Select
+                        label="Select Room"
+                        value={selectedValue}
+                        onChange={(value) => setSelectedValue(value)}
+                    >
+                        {categories?.data.map((item) => (
+                            <Option key={item._id} value={item?._id}>
+                                {item?.title}
+                            </Option>
+                        ))}
+                    </Select>
                     <div className="flex justify-center">
                         <button
                             type="button"

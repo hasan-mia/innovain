@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import useAuthRequire from '../../hooks/useAuthRequire';
 import category from '../../redux/api/category';
 
 export default function Edit() {
+    useAuthRequire();
     const { isAdmin } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -49,7 +51,7 @@ export default function Edit() {
         <Card className="overflow-scroll h-full w-full">
             <div className="my-4 px-0 lg:px-2">
                 <h1 className="text-center text-sm lg:text-md py-1 font-semibold uppercase text-white bg-purple-600">
-                    Add Category
+                    Add Tool
                 </h1>
                 <div className="flex flex-col gap-2 my-4">
                     <Input

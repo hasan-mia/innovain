@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import useAuthRequire from '../../hooks/useAuthRequire';
 import category from '../../redux/api/category';
 
 export default function Add() {
+    useAuthRequire();
     const { isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();

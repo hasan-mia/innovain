@@ -1,12 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 import { Card, Spinner, Typography } from '@material-tailwind/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import useAuthRequire from '../hooks/useAuthRequire';
 import post from '../redux/api/post';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Action'];
 export default function AdminDashboard() {
-    useAuthRequire();
     const { posts, isLoading } = useSelector((state) => state.post);
     const dispatch = useDispatch();
 
@@ -51,7 +50,7 @@ export default function AdminDashboard() {
                             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
                             return (
-                                <tr key={item.id}>
+                                <tr key={item._id}>
                                     <td className={classes}>
                                         <Typography
                                             variant="small"
