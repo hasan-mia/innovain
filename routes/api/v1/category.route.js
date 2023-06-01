@@ -28,7 +28,7 @@ router.route("/delete/:id").delete(limiter, verifyJWT, CategoryController.delete
  * @apiDescription get category of user
  * @apiPermission anyone
  */
-router.route("/").get(limiter, CategoryController.getAllCategory);
+router.route("/all").get(limiter, CategoryController.getAllCategory);
 
 /**
  * @api {get} /get single category

@@ -5,10 +5,6 @@ mongoose.plugin(slug);
 
 const PostSchema = new mongoose.Schema(
   {
-    userId: {
-      type: String,
-      required: true,
-    },
     title: {
       type: String,
       max: 250,

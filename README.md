@@ -1,4 +1,4 @@
-# MVC Pattern with REACT, EXPRESS and MONGOSE
+# InnovaInfo Mern Stack Project
 
 # Folder Stracture
 
@@ -19,6 +19,9 @@ routes
 -api
 -v1
 -auth.route.js
+-category.route.js
+-post.route.js
+-user.route.js
 views
 -public
 -src
@@ -52,10 +55,6 @@ env
 ### react
 
 ### react router dom
-
-### splidejs
-
-### rsuitjs
 
 ### tailwind
 
@@ -95,7 +94,9 @@ yarn build
 or
 npm run build
 
-## Authentication API reference
+## API Documention
+
+#### https://documenter.getpostman.com/view/25680118/2s93mBvdYw
 
 ### Register a new User
 

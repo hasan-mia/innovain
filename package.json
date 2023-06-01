@@ -26,6 +26,7 @@
 		"mongoose-slug-generator": "^1.0.4",
 		"morgan": "^1.10.0",
 		"nodemon": "^2.0.21",
+		"react-icons": "^4.9.0",
 		"require-stack": "^1.0.2"
 	},
 	"devDependencies": {

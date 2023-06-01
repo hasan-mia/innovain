@@ -7,11 +7,11 @@
 		}
 	],
 	"routes": [
+		{ "src": "/(.*)", "dest": "/" },
 		{ "src": "/api/v1/auth/(.*)", "dest": "/api/v1/auth/$1" },
 		{ "src": "/api/v1/user/(.*)", "dest": "/api/v1/user/$1" },
 		{ "src": "/api/v1/category/(.*)", "dest": "/api/v1/category/$1" },
 		{ "src": "/api/v1/post/(.*)", "dest": "/api/v1/post/$1" },
-		{ "src": "/api/v1/(.*)", "dest": "/api/v1/$1" },
-		{ "src": "/(.*)", "dest": "/" }
+		{ "src": "/api/v1/(.*)", "dest": "/api/v1/$1" }
 	]
 }

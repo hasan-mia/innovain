@@ -8,15 +8,21 @@ const categoryPublish = async (req, res) => {
   // Create image post object for mongodb
   const categoryPost = new Category(req.body);
   try {
+     if (req.body.isAdmin) {
     const saveCategory = await categoryPost.save();
     res
       .status(200)
       .send({
         status: 200,
         success: true,
-        message: "Category publish successfully",
+        message: "room publish successfully",
         data: saveCategory,
       });
+    }else{
+      res
+        .status(403)
+        .send({ status: 403, success: false, message: "you can't post" });
+    }
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -34,7 +40,7 @@ const categoryUpdate = async (req, res) => {
         .send({
           status: 200,
           success: true,
-          message: "Category update successfully",
+          message: "room update successfully",
         });
     } else {
       res

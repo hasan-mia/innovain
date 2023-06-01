@@ -15,7 +15,7 @@ const postPublish = async (req, res) => {
     res.status(200).send({
       status: 200,
       success: true,
-      message: "post publish successfully",
+      message: "tool publish successfully",
       data: savePost,
     });
   } catch (error) {
@@ -32,13 +32,12 @@ const postUpdate = async (req, res) => {
       res.status(200).send({
         status: 200,
         success: true,
-        message: "post update successfully",
-        data: post
+        message: "tools update successfully",
       });
     } else {
       res
         .status(403)
-        .send({ status: 403, success: false, message: "you can't update" });
+        .send({ status: 403, success: false, message: "only admin can update" });
     }
   } catch (error) {
     return res.status(500).send(error);
@@ -48,8 +47,12 @@ const postUpdate = async (req, res) => {
 const postDelete = async (req, res) => {
   try {
      if (req.body.isAdmin) {
-    const post = await Post.findOneAndDelete(req.params.id);
-    
+      await Post.findByIdAndDelete({ _id: req.params.id });
+      res.status(200).send({
+        status: 200,
+        success: true,
+        message: "tool deleted successfully",
+      });
     if (!post) {
       res.status(404).send({ status: 404, success: false, message: "post not found" })
     }else{
@@ -58,11 +61,11 @@ const postDelete = async (req, res) => {
         .send({
           status: 200,
           success: true,
-          message: "delete post successfully",
+          message: "delete tool successfully",
         });
     }
   }else{
-    res.status(403).send({ status: 403, success: false, message: "you can't update" });
+    res.status(403).send({ status: 403, success: false, message: "only admin can delete" });
   }
   } catch (error) {
     res.status(500).send(error)
@@ -100,11 +103,11 @@ const getAllPost = async (req, res) => {
     if (posts) {
       res
         .status(200)
-        .send({ status: 200, success: true, message: "All post", data: posts });
+        .send({ status: 200, success: true, message: "post found", data: posts });
     } else {
       res
-        .status(403)
-        .send({ status: 403, success: false, message: "forbiden access" });
+        .status(404)
+        .send({ status: 403, success: false, message: "post not found" });
     }
   } catch (error) {
     return res.status(500).send(error);
