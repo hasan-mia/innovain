@@ -18,25 +18,27 @@ export default function Users() {
             const data = {
                 isAdmin,
                 status,
+                type: 1,
             };
             const res = await auth.updateStatus(data, id);
             if (res.status === 200) {
                 toast.success(`Permition granted`);
                 dispatch(auth.allUser());
             } else {
-                toast.erros(`${res.data.error}`);
+                toast.error(`${res.data.error}`);
             }
         } else {
             const data = {
                 isAdmin: true,
                 status,
+                type: 0,
             };
             const res = await auth.updateStatus(data, id);
             if (res.status === 200) {
                 toast.success(`Permition removed`);
                 dispatch(auth.allUser());
             } else {
-                toast.erros(`${res.data.error}`);
+                toast.error(`${res.data.error}`);
             }
         }
     };

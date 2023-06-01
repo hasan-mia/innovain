@@ -1,19 +1,42 @@
 /* eslint-disable no-underscore-dangle */
 import { Card, Spinner, Typography } from '@material-tailwind/react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import post from '../redux/api/post';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Action'];
+
 export default function AdminDashboard() {
     const { posts, isLoading } = useSelector((state) => state.post);
+    const { isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+    // handle edit
+    const handleEdit = (id) => {
+        console.log(id);
+    };
 
+    // handle Delete
+    const handleDelete = async (id) => {
+        const data = {
+            isAdmin,
+        };
+        const res = await post.deletePost(data, id);
+        if (res.status === 200) {
+            toast.success(`${res.data.message}`);
+            dispatch(post.allPost());
+        } else {
+            toast.erros(`${res.data.error}`);
+        }
+    };
     useEffect(() => {
         if (!posts) {
             dispatch(post.allPost());
         }
     }, [posts, dispatch]);
+
     if (isLoading) {
         return (
             <div className="flex justify-center py-5 gap-8">
@@ -22,8 +45,19 @@ export default function AdminDashboard() {
             </div>
         );
     }
+
     return (
-        <div className="container my-5">
+        <div>
+            <div className="flex justify-end">
+                {isAdmin && (
+                    <Link
+                        to="/tool/add"
+                        className="my-1 p-1 text-sm rounded-sm bg-green-600 text-white uppercase"
+                    >
+                        ADD Tools
+                    </Link>
+                )}
+            </div>
             <Card className="overflow-scroll h-full w-full">
                 <table className="w-full min-w-max table-auto text-left">
                     <thead>
@@ -70,24 +104,20 @@ export default function AdminDashboard() {
                                         </Typography>
                                     </td>
                                     <td className={`${classes} flex gap-2`}>
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
+                                        <button
+                                            type="button"
+                                            className="text-green-500"
+                                            onClick={() => handleEdit(item._id)}
                                         >
-                                            Edit
-                                        </Typography>
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
+                                            <MdEdit />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="text-red-500"
+                                            onClick={() => handleDelete(item._id)}
                                         >
-                                            Delete
-                                        </Typography>
+                                            <MdDelete />
+                                        </button>
                                     </td>
                                 </tr>
                             );

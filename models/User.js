@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-// user type 0 means normal user, 1 means  means super admin
-// user  status 0 means acess, 1 means  means no access
+// user type 0 means normal user, 1 means renter, 2 means super admin
+// user  status 0 means no acess, 1 means  means access
 
 const UserSchema = new mongoose.Schema(
   {

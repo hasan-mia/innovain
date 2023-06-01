@@ -39,5 +39,12 @@ post.singlePost = createAsyncThunk(`${name}singlePost`, async (id) => {
     const res = await axios.get(url.singlePost, config.paramsWithHeader({ id }));
     return res;
 });
-
+// status update
+post.switchStatus = async (data, id) => {
+    const res = await axios
+        .put(`${url.switchStatus}/${id}`, data, config.basicHeader)
+        .then((response) => response)
+        .catch((err) => err.response);
+    return res;
+};
 export default post;

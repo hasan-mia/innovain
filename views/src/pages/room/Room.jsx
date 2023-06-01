@@ -29,7 +29,7 @@ export default function Room() {
             toast.success(`${res.data.message}`);
             dispatch(category.allCategory());
         } else {
-            toast.erros(`${res.data.error}`);
+            toast.error(`${res.data.error}`);
         }
     };
 

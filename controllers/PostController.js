@@ -35,9 +35,11 @@ const postUpdate = async (req, res) => {
         message: "tools update successfully",
       });
     } else {
-      res
-        .status(403)
-        .send({ status: 403, success: false, message: "only admin can update" });
+      res.status(403).send({
+        status: 403,
+        success: false,
+        message: "only admin can update",
+      });
     }
   } catch (error) {
     return res.status(500).send(error);
@@ -45,16 +47,15 @@ const postUpdate = async (req, res) => {
 };
 
 const postDelete = async (req, res) => {
-  console.log(req.params.id, req.body.isAdmin)
-   if (req.body.isAdmin) {
+  console.log(req.params.id, req.body.isAdmin);
+  if (req.body.isAdmin) {
     try {
       await Post.findByIdAndDelete({ _id: req.params.id });
       res.status(200).send({
         status: 200,
-          success: true,
-          message: "delete tool successfully",
+        success: true,
+        message: "delete tool successfully",
       });
-
     } catch (error) {
       return res.status(500).send(error);
     }
@@ -65,40 +66,40 @@ const postDelete = async (req, res) => {
       message: "only admin can delete",
     });
   }
-}
+};
 
 // ======== get single posts ============
 
 const getPost = async (req, res) => {
   try {
-  const post = await Post.findOne({ _id: req.params.id });
-  if (!post) {
-    res
-      .status(404)
-      .send({ status: 404, success: false, message: "post not found" });
-    } else {
+    const post = await Post.findOne({ _id: req.params.id });
+    if (!post) {
       res
-        .status(200)
-        .send({
-          status: 200,
-          success: true,
-          message: "post found",
-          data: post,
-        });
+        .status(404)
+        .send({ status: 404, success: false, message: "post not found" });
+    } else {
+      res.status(200).send({
+        status: 200,
+        success: true,
+        message: "post found",
+        data: post,
+      });
     }
   } catch (error) {
     res.status(500).send(error);
   }
-
-}
+};
 // ======== get all posts for admin ============
 const getAllPost = async (req, res) => {
   try {
-     const posts = await Post.find({});
+    const posts = await Post.find({});
     if (posts) {
-      res
-        .status(200)
-        .send({ status: 200, success: true, message: "post found", data: posts });
+      res.status(200).send({
+        status: 200,
+        success: true,
+        message: "post found",
+        data: posts,
+      });
     } else {
       res
         .status(404)
@@ -109,10 +110,37 @@ const getAllPost = async (req, res) => {
   }
 };
 
+// ========Update post status===========
+const toolSwitching = async (req, res) => {
+  if (req.body.type === 1 || 2 || req.body.isAdmin) {
+    try {
+      await Post.findByIdAndUpdate(
+        req.params.id,
+        { $set: { status: req.body.status } },
+        { upsert: true }
+      );
+      res.status(200).send({
+        status: 200,
+        success: true,
+        message: "status has been updated",
+      });
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  } else {
+    return res.status(403).send({
+      status: 403,
+      success: false,
+      message: "you can update it",
+    });
+  }
+};
+
 module.exports = {
   postPublish,
   postUpdate,
   postDelete,
   getPost,
   getAllPost,
+  toolSwitching,
 };

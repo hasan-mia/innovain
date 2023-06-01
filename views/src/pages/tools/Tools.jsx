@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 import { Card, Spinner, Typography } from '@material-tailwind/react';
 import { useEffect } from 'react';
@@ -7,15 +8,41 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import post from '../../redux/api/post';
 
-const TABLE_HEAD = ['Serial', 'Name', 'Action'];
+const TABLE_HEAD = ['Serial', 'Name', 'Action', 'Switch'];
 
 export default function Tools() {
     const { posts, isLoading } = useSelector((state) => state.post);
     const { isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-    // handle edit
-    const handleEdit = (id) => {
-        console.log(id);
+    // handle switch
+    const handleSwitch = async (status, id) => {
+        if (status === 1) {
+            const data = {
+                isAdmin,
+                status,
+                type: 1,
+            };
+            const res = await post.switchStatus(data, id);
+            if (res.status === 200) {
+                toast.success(`Permition granted`);
+                dispatch(post.allPost());
+            } else {
+                toast.error(`${res.data.error}`);
+            }
+        } else {
+            const data = {
+                isAdmin: true,
+                status,
+                type: 1,
+            };
+            const res = await post.switchStatus(data, id);
+            if (res.status === 200) {
+                toast.success(`Permition removed`);
+                dispatch(post.allPost());
+            } else {
+                toast.error(`${res.data.error}`);
+            }
+        }
     };
 
     // handle Delete
@@ -79,7 +106,7 @@ export default function Tools() {
                         </tr>
                     </thead>
                     <tbody>
-                        {posts?.data.map((item, index) => {
+                        {posts?.data?.map((item, index) => {
                             const isLast = index === posts.data.length - 1;
                             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
@@ -100,15 +127,43 @@ export default function Tools() {
                                             color="blue-gray"
                                             className="font-normal"
                                         >
-                                            {item.title}
+                                            {item?.title}
                                         </Typography>
                                     </td>
                                     <td className={`${classes} flex gap-2`}>
+                                        <button type="button" className="text-green-500">
+                                            <MdEdit />
+                                        </button>
                                         <button
                                             type="button"
-                                            className="text-green-500"
-                                            onClick={() => handleEdit(item._id)}
+                                            className="text-red-500"
+                                            onClick={() => handleDelete(item._id)}
                                         >
+                                            <MdDelete />
+                                        </button>
+                                        <button type="button" className="text-green-500">
+                                            <MdEdit />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="text-red-500"
+                                            onClick={() => handleDelete(item._id)}
+                                        >
+                                            <MdDelete />
+                                        </button>
+                                    </td>
+                                    <td className={`${classes} flex gap-2`}>
+                                        <button type="button" className="text-green-500">
+                                            <MdEdit />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="text-red-500"
+                                            onClick={() => handleDelete(item._id)}
+                                        >
+                                            <MdDelete />
+                                        </button>
+                                        <button type="button" className="text-green-500">
                                             <MdEdit />
                                         </button>
                                         <button

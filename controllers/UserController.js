@@ -50,26 +50,23 @@ const singleUserByMail = async (req, res) => {
   }
 };
 
-
 // ========Get all User for admin============
 const allleUser = async (req, res) => {
   try {
-      const users = await User.find({});
-       if (users) {
+    const users = await User.find({});
+    if (users) {
       res.status(200).send({
         status: 200,
         success: true,
         message: `user found successfully`,
         data: users,
-      })
+      });
     } else {
       res
         .status(403)
         .send({ status: 403, success: false, message: "forbiden access" });
     }
-      
-    } 
-  catch (error) {
+  } catch (error) {
     return res.status(500).send(error);
   }
 };
@@ -86,16 +83,19 @@ const updateUser = async (req, res) => {
       }
     }
     try {
-   
       const checkEmail = await User.findOne({ email: req.body.email });
       if (checkEmail) {
         res
           .status(406)
           .send({ status: 406, success: false, error: "email already used" });
       } else {
-        const user = await User.findByIdAndUpdate(req.params.id, {
-          $set: req.body,
-        }, {upsert: true});
+        const user = await User.findByIdAndUpdate(
+          req.params.id,
+          {
+            $set: req.body,
+          },
+          { upsert: true }
+        );
         res.status(200).send({
           status: 200,
           success: true,
@@ -142,13 +142,16 @@ const deleteUser = async (req, res) => {
 const userStatusUpdate = async (req, res) => {
   if (req.body.isAdmin) {
     try {
-      const user = await User.findByIdAndUpdate(req.params.id,{$set: { status: req.body.status }},{ upsert: true });
+      await User.findByIdAndUpdate(
+        req.params.id,
+        { $set: { status: req.body.status, type: req.body.type } },
+        { upsert: true }
+      );
       res.status(200).send({
         status: 200,
         success: true,
         message: "status has been updated",
       });
-
     } catch (error) {
       return res.status(500).send(error);
     }

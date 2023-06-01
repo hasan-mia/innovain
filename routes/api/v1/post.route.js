@@ -17,21 +17,21 @@ router.route("/").post(limiter, verifyJWT, PostController.postPublish);
  */
 router.route("/update/:id").put(limiter, verifyJWT, PostController.postUpdate);
 
-  /**
+/**
  * @api {put} /update status
  * @apiDescription update status of user
  * @apiPermission anyone
  */
-router.route("/delete/:id").delete(limiter, verifyJWT, PostController.postDelete);
+router
+  .route("/delete/:id")
+  .delete(limiter, verifyJWT, PostController.postDelete);
 
-
-  /**
+/**
  * @api {get} /get single post for admin
  * @apiDescription single post of user
  * @apiPermission anyone
  */
 router.route("/:id").get(limiter, PostController.getPost);
-
 
 /**
  * @api {get} /get all post for admin
@@ -39,5 +39,14 @@ router.route("/:id").get(limiter, PostController.getPost);
  * @apiPermission anyone
  */
 router.route("/").get(limiter, PostController.getAllPost);
+
+/**
+ * @api {delete} change tool switch
+ * @apiDescription change status
+ * @apiPermission admin
+ */
+router
+  .route("/switch/:id")
+  .put(limiter, verifyJWT, PostController.toolSwitching);
 
 module.exports = router;

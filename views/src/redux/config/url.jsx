@@ -19,5 +19,6 @@ url.updatePost = `${config.baseUrl}api/v1/post/update`; // id with parameters  [
 url.deletePost = `${config.baseUrl}api/v1/post/delete`; // id with parameters [delete]
 url.allPost = `${config.baseUrl}api/v1/post`; // [get]
 url.singlePost = `${config.baseUrl}api/v1/post`; // id with parameters [get]
+url.switchStatus = `${config.baseUrl}api/v1/post/switch`; // id with parameters [put] and isAdmin = true
 
 export default url;
