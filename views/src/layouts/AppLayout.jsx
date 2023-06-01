@@ -3,8 +3,10 @@ import React from 'react';
 import { ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from '../components/header/Header';
+import useAuth from '../hooks/useAuth';
 
 export default function AppLayout({ children }) {
+    useAuth();
     return (
         <>
             <Header />

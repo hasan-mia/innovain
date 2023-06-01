@@ -23,22 +23,14 @@ auth.signinUser = async (data) => {
         .catch((err) => err.response);
     return res;
 };
-
-auth.signUp = createAsyncThunk(`${name}signUp`, async (data) => {
-    const res = await axios.post(url.signUp, data, config.simpleHeader);
+// normal request for status update
+auth.updateStatus = async (data, id) => {
+    const res = await axios
+        .put(`${url.updateStatus}/${id}`, data, config.basicHeader)
+        .then((response) => response)
+        .catch((err) => err.response);
     return res;
-});
-
-auth.signIn = createAsyncThunk(`${name}signIn`, async (data) => {
-    const res = await axios.post(url.signIn, data, config.simpleHeader);
-    return res;
-});
-
-auth.updateStatus = createAsyncThunk(`${name}signIn`, async (data, id) => {
-    const res = await axios.put(url.updateStatus, data, config.paramsWithHeader({ id }));
-    return res;
-});
-
+};
 auth.userInfo = createAsyncThunk(`${name}userInfo`, async (email) => {
     const res = await axios.get(url.userInfo, email, config.basicHeader);
     return res;

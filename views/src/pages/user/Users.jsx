@@ -2,7 +2,6 @@
 import { Card, Spinner, Typography } from '@material-tailwind/react';
 import { useEffect } from 'react';
 import { FiUserCheck, FiUserMinus, FiUserPlus } from 'react-icons/fi';
-import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import auth from '../../redux/api/auth';
@@ -10,16 +9,35 @@ import auth from '../../redux/api/auth';
 const TABLE_HEAD = ['Serial', 'Name', 'Status', 'Action'];
 
 export default function Users() {
-    const { users, isLoading, isAdmin } = useSelector((state) => state.auth);
+    const { users, isLoading } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     // handle Status
-    const handleStatus = async (id) => {
-        if (isAdmin) {
-            const res = await auth.updateStatus(isAdmin, id);
-            console.log(res);
+    const handleStatus = async (status, id) => {
+        if (status === 1) {
+            const data = {
+                isAdmin: true,
+                status,
+            };
+            const res = await auth.updateStatus(data, id);
+            if (res.status === 200) {
+                toast.success(`Permition granted`);
+                dispatch(auth.allUser());
+            } else {
+                toast.erros(`${res.data.error}`);
+            }
         } else {
-            toast.info('Only admin can change');
+            const data = {
+                isAdmin: true,
+                status,
+            };
+            const res = await auth.updateStatus(data, id);
+            if (res.status === 200) {
+                toast.success(`Permition removed`);
+                dispatch(auth.allUser());
+            } else {
+                toast.erros(`${res.data.error}`);
+            }
         }
     };
 
@@ -65,7 +83,7 @@ export default function Users() {
                             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
                             return (
-                                <tr key={item.id}>
+                                <tr key={item._id}>
                                     <td className={classes}>
                                         <Typography
                                             variant="small"
@@ -86,7 +104,7 @@ export default function Users() {
                                     </td>
                                     <td className={classes}>
                                         <Typography
-                                            variant="large"
+                                            variant="h2"
                                             color="blue-gray"
                                             className="font-normal"
                                         >
@@ -104,18 +122,19 @@ export default function Users() {
                                         </Typography>
                                     </td>
                                     <td className={`${classes} flex gap-2`}>
-                                        <button type="button" className="text-blue-500">
-                                            <MdEdit size={20} />
-                                        </button>
-                                        <button type="button" className="text-red-500">
-                                            <MdDelete size={20} />
-                                        </button>
                                         <button
                                             type="button"
                                             className="text-green-500"
-                                            onClick={() => handleStatus(item._id)}
+                                            onClick={() => handleStatus(1, item._id)}
                                         >
                                             <FiUserPlus size={20} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="text-red-500"
+                                            onClick={() => handleStatus(0, item._id)}
+                                        >
+                                            <FiUserMinus size={20} />
                                         </button>
                                     </td>
                                 </tr>

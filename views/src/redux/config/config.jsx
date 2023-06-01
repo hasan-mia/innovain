@@ -7,14 +7,14 @@ const session = localStorage.getItem('session');
 
 config.simpleHeader = {
     headers: {
-        'content-type': 'application/json',
+        'Content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
     },
 };
 
 config.basicHeader = {
     headers: {
-        'content-type': 'application/json',
+        'Content-type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         Authorization: `Bearer ${config.token}`,
     },
@@ -24,7 +24,7 @@ config.paramsWithHeader = (param) => {
     const params = {
         params: param,
         headers: {
-            'content-type': 'application/json',
+            'Content-type': 'application/json',
             'Access-Control-Allow-Origin': '*',
             authorization: `Bearer ${config.token}`,
         },
