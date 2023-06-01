@@ -26,6 +26,7 @@ export default function AppRoute() {
             >
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Authentication />} />
+                <Route path="/dashboard" element={<AdminDashboard />} />
                 {/* user */}
                 <Route path="/users" element={<Users />} />
                 {/* category */}
@@ -36,8 +37,6 @@ export default function AppRoute() {
                 <Route path="/tools" element={<Tools />} />
                 <Route path="/tool/add" element={<AddTool />} />
                 <Route path="/tool/edit/:id" element={<EditTool />} />
-
-                <Route path="/dashboard" element={<AdminDashboard />} />
 
                 <Route path="*" element={<Error />} />
             </Route>

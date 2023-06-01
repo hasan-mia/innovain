@@ -101,8 +101,8 @@ export default function Header() {
     return (
         <Navbar className="mx-auto py-2 lg:py-4 rounded-none shadow-none border-b-2 border-b-blue-gray-50">
             <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
-                <Link to="/" className="text-purple-500 font-semibold">
-                    INNOVA INFO
+                <Link to="/" className="text-blue-500 font-bold">
+                    INNOVAINFO
                 </Link>
                 <div className="hidden lg:block">{navList}</div>
                 <div className="hidden lg:inline-block">

@@ -1,19 +1,34 @@
+/* eslint-disable no-underscore-dangle */
 import { Card, Spinner, Typography } from '@material-tailwind/react';
 import { useEffect } from 'react';
+import { FiUserCheck, FiUserMinus, FiUserPlus } from 'react-icons/fi';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import auth from '../../redux/api/auth';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Status', 'Action'];
 
 export default function Users() {
-    const { users, isLoading } = useSelector((state) => state.auth);
+    const { users, isLoading, isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+
+    // handle Status
+    const handleStatus = async (id) => {
+        if (isAdmin) {
+            const res = await auth.updateStatus(isAdmin, id);
+            console.log(res);
+        } else {
+            toast.info('Only admin can change');
+        }
+    };
 
     useEffect(() => {
         if (!users) {
             dispatch(auth.allUser());
         }
     }, [users, dispatch]);
+
     if (isLoading) {
         return (
             <div className="flex justify-center py-5 gap-8">
@@ -71,41 +86,37 @@ export default function Users() {
                                     </td>
                                     <td className={classes}>
                                         <Typography
-                                            variant="small"
+                                            variant="large"
                                             color="blue-gray"
                                             className="font-normal"
                                         >
-                                            {item.status === 1 ? 'Access' : 'No Access'}
+                                            {item.status === 1 ? (
+                                                <span className="text-green-500">
+                                                    {' '}
+                                                    <FiUserCheck size={20} />
+                                                </span>
+                                            ) : (
+                                                <span className="text-red-500">
+                                                    {' '}
+                                                    <FiUserMinus size={20} />
+                                                </span>
+                                            )}
                                         </Typography>
                                     </td>
                                     <td className={`${classes} flex gap-2`}>
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
+                                        <button type="button" className="text-blue-500">
+                                            <MdEdit size={20} />
+                                        </button>
+                                        <button type="button" className="text-red-500">
+                                            <MdDelete size={20} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="text-green-500"
+                                            onClick={() => handleStatus(item._id)}
                                         >
-                                            Edit
-                                        </Typography>
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
-                                        >
-                                            Delete
-                                        </Typography>
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
-                                        >
-                                            Status
-                                        </Typography>
+                                            <FiUserPlus size={20} />
+                                        </button>
                                     </td>
                                 </tr>
                             );

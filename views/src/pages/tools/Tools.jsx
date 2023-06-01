@@ -2,12 +2,15 @@ import { Card, Spinner, Typography } from '@material-tailwind/react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import useAuthRequire from '../../hooks/useAuthRequire';
 import post from '../../redux/api/post';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Action'];
 
 export default function Tools() {
+    useAuthRequire();
     const { posts, isLoading } = useSelector((state) => state.post);
+    const { isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -28,12 +31,14 @@ export default function Tools() {
     return (
         <div>
             <div className="flex justify-end">
-                <Link
-                    to="/tool/add"
-                    className="my-1 p-1 text-sm rounded-sm bg-green-600 text-white uppercase"
-                >
-                    ADD Tools
-                </Link>
+                {isAdmin && (
+                    <Link
+                        to="/tool/add"
+                        className="my-1 p-1 text-sm rounded-sm bg-green-600 text-white uppercase"
+                    >
+                        ADD Tools
+                    </Link>
+                )}
             </div>
             <Card className="overflow-scroll h-full w-full">
                 <table className="w-full min-w-max table-auto text-left">

@@ -1,10 +1,12 @@
 import { Card, Spinner, Typography } from '@material-tailwind/react';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useAuthRequire from '../hooks/useAuthRequire';
 import post from '../redux/api/post';
 
 const TABLE_HEAD = ['Serial', 'Name', 'Action'];
 export default function AdminDashboard() {
+    useAuthRequire();
     const { posts, isLoading } = useSelector((state) => state.post);
     const dispatch = useDispatch();
 
@@ -13,7 +15,6 @@ export default function AdminDashboard() {
             dispatch(post.allPost());
         }
     }, [posts, dispatch]);
-
     if (isLoading) {
         return (
             <div className="flex justify-center py-5 gap-8">
@@ -23,7 +24,7 @@ export default function AdminDashboard() {
         );
     }
     return (
-        <div className="container">
+        <div className="container my-5">
             <Card className="overflow-scroll h-full w-full">
                 <table className="w-full min-w-max table-auto text-left">
                     <thead>
