@@ -57,42 +57,48 @@ const io = socketIO(server, {
 let onlineUsers = [];
 // add user
 const addNewUser = (email, socketId) => {
-  !onlineUsers.some((user) => user.email === email) &&
+  const existingUser = onlineUsers?.find((user) => user?.email === email);
+  if (!existingUser) {
     onlineUsers.push({ email, socketId });
+  }
 };
 // remove user
 const removeUser = (socketId) => {
-  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+  onlineUsers = onlineUsers?.filter((user) => user?.socketId !== socketId);
 };
 // get user by email
 const getUser = (email) => {
-  return onlineUsers.find((user) => user.email === email);
+  return onlineUsers?.find((user) => user?.email === email);
 };
 
 // ======connect from socket-client=========
 
 io.on("connection", (socket) => {
   console.log("A user connected");
-
   socket.on("newUser", (email) => {
     addNewUser(email, socket.id);
   });
 
-  socket.on("sendNotification", ({ senderName, receiverName, type }) => {
-    const receiver = getUser(receiverName);
-    io.to(receiver.socketId).emit("getNotification", {
-      senderName,
-      type,
-    });
-  });
-
-  socket.on("sendText", ({ senderName, receiverName, text }) => {
-    const receiver = getUser(receiverName);
-    io.to(receiver.socketId).emit("getText", {
-      senderName,
+  // tools permissions notifications
+  socket.on("sendToolNotification", ({ senderEmail, receiverEmail, text }) => {
+    const receiver = getUser(receiverEmail);
+    io.to(receiver?.socketId).emit("getToolNotification", {
+      senderEmail,
       text,
     });
   });
+
+  // user permissions notifications
+  socket.on(
+    "sendUserPermissionNotification",
+    ({ senderEmail, receiverEmail, text }) => {
+      const receiver = getUser(receiverEmail);
+      io.to(receiver.socketId).emit("getUserPermissionNotification", {
+        senderEmail,
+        text,
+      });
+    }
+  );
 
   // ======disconnect from socket=========
   socket.on("disconnect", () => {

@@ -13,6 +13,7 @@ import post from '../../redux/api/post';
 const TABLE_HEAD = ['Serial', 'Name', 'Action', 'Status'];
 
 export default function Tools() {
+    const { socket } = useSelector((state) => state.socket);
     const { posts, isLoading } = useSelector((state) => state.post);
     const { users, userInfo, isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
@@ -29,6 +30,11 @@ export default function Tools() {
             if (res.status === 200) {
                 toast.success(`${name} On`);
                 dispatch(post.allPost());
+                socket?.emit('sendToolNotification', {
+                    senderEmail: user?.email,
+                    receiverEmail: 'admin@admin.com',
+                    text: `${name} On`,
+                });
             } else {
                 toast.error(`${res.data.error}`);
             }
@@ -44,6 +50,11 @@ export default function Tools() {
             if (res.status === 200) {
                 toast.success(`${name} OFF`);
                 dispatch(post.allPost());
+                socket?.emit('sendToolNotification', {
+                    senderEmail: user?.email,
+                    receiverEmail: isAdmin ? user?.email : 'admin@admin.com',
+                    text: `${name} Off`,
+                });
             } else {
                 toast.error(`${res.data.error}`);
             }
@@ -71,6 +82,10 @@ export default function Tools() {
             dispatch(auth.allUser());
         }
     }, [posts, users, dispatch]);
+
+    useEffect(() => {
+        socket?.emit('newUser', user?.email);
+    }, [socket, user]);
 
     if (isLoading) {
         return (

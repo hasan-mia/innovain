@@ -1,17 +1,38 @@
 /* eslint-disable no-nested-ternary */
-import { Button, Collapse, IconButton, Navbar, Typography } from '@material-tailwind/react';
+import {
+    Badge,
+    Button,
+    Card,
+    Collapse,
+    IconButton,
+    Navbar,
+    Typography,
+} from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import { HiBars3 } from 'react-icons/hi2';
-import { MdClose } from 'react-icons/md';
+import { MdClose, MdNotifications } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logOut } from '../../redux/slice/AuthSlice';
 
 export default function Header() {
+    const { socket } = useSelector((state) => state.socket);
     const { isAdmin, isLogin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [openNav, setOpenNav] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        socket?.on('getToolNotification', (data) => {
+            setNotifications((prev) => [...prev, data]);
+        });
+    }, [socket]);
+    const handleRead = () => {
+        setNotifications([]);
+        setOpen(false);
+    };
     // handle logout
     const handleLogout = () => {
         dispatch(logOut());
@@ -20,6 +41,19 @@ export default function Header() {
     useEffect(() => {
         window.addEventListener('resize', () => window.innerWidth >= 960 && setOpenNav(false));
     }, []);
+    // displya notification
+    const displayNotification = ({ senderEmail, text }) => (
+        <Card className="w-full">
+            <div className="flex flex-col p-1 border-2">
+                <Typography variant="small" color="blue-gray">
+                    {senderEmail}
+                </Typography>
+                <Typography variant="small" color="gray" className="font-normal">
+                    {text}
+                </Typography>
+            </div>
+        </Card>
+    );
 
     // Navlist for admin
     const adminNavlist = () => (
@@ -105,6 +139,19 @@ export default function Header() {
                     INNOVAINFO
                 </Link>
                 <div className="hidden lg:block">{navList}</div>
+                <div className="relative hidden lg:block">
+                    <Badge content={notifications?.length || 0}>
+                        <Button onClick={() => setOpen(!open)}>
+                            <MdNotifications />
+                        </Button>
+                    </Badge>
+                    {open && (
+                        <div className="absolute">
+                            {notifications?.map((n) => displayNotification(n))}
+                            <Button onClick={handleRead}>Mark read</Button>
+                        </div>
+                    )}
+                </div>
                 <div className="hidden lg:inline-block">
                     {isLogin ? (
                         <Button
@@ -140,6 +187,21 @@ export default function Header() {
             <Collapse open={openNav}>
                 <div className="container mx-auto">
                     {navList}
+                    <div>
+                        <Badge content={notifications?.length || 0}>
+                            <Button onClick={() => setOpen(!open)}>
+                                <MdNotifications />
+                            </Button>
+                        </Badge>
+                        {open && (
+                            <div className="absolute">
+                                {notifications?.map((n) => displayNotification(n))}
+                                <button type="button" onClick={handleRead}>
+                                    Mark as read
+                                </button>
+                            </div>
+                        )}
+                    </div>
                     {isLogin ? (
                         <Button
                             variant="gradient"
