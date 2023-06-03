@@ -46,7 +46,6 @@ app.use("/api/v1/post", postRoute); // post route
 // ===================================//
 //      setup socket IO Server        //
 //====================================//
-
 const io = socketIO(server, {
   cors: {
     origin: "*",
@@ -54,20 +53,51 @@ const io = socketIO(server, {
   },
 });
 
+// ==========user controls function==========
+let onlineUsers = [];
+// add user
+const addNewUser = (email, socketId) => {
+  !onlineUsers.some((user) => user.email === email) &&
+    onlineUsers.push({ email, socketId });
+};
+// remove user
+const removeUser = (socketId) => {
+  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+};
+// get user by email
+const getUser = (email) => {
+  return onlineUsers.find((user) => user.email === email);
+};
+
+// ======connect from socket-client=========
+
 io.on("connection", (socket) => {
   console.log("A user connected");
 
-  socket.on("message", (data) => {
-    console.log("Received message:", data);
-    // Handle the received message
-
-    // Emit a custom event to the connected clients
-    io.emit("customEvent", "This is a custom event");
+  socket.on("newUser", (email) => {
+    addNewUser(email, socket.id);
   });
 
+  socket.on("sendNotification", ({ senderName, receiverName, type }) => {
+    const receiver = getUser(receiverName);
+    io.to(receiver.socketId).emit("getNotification", {
+      senderName,
+      type,
+    });
+  });
+
+  socket.on("sendText", ({ senderName, receiverName, text }) => {
+    const receiver = getUser(receiverName);
+    io.to(receiver.socketId).emit("getText", {
+      senderName,
+      text,
+    });
+  });
+
+  // ======disconnect from socket=========
   socket.on("disconnect", () => {
     console.log("A user disconnected");
-    // Clean up resources or perform other necessary tasks
+    removeUser(socket.id);
   });
 });
 
