@@ -27,7 +27,8 @@ export default function Users() {
             } else {
                 toast.error(`${res.data.error}`);
             }
-        } else {
+        }
+        if (status === 0) {
             const data = {
                 isAdmin: true,
                 status,

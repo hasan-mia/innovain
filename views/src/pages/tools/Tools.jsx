@@ -16,14 +16,14 @@ export default function Tools() {
     const { posts, isLoading } = useSelector((state) => state.post);
     const { users, userInfo, isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-    const user = users?.find((item) => item._id === userInfo.userId);
+    const user = users?.find((item) => item._id === userInfo?.userId);
     // handle switch
     const handleSwitch = async (status, id, name) => {
         if (status === 1) {
             const data = {
                 isAdmin,
                 status,
-                type: user.type,
+                type: user?.type,
             };
             const res = await post.switchStatus(data, id);
             if (res.status === 200) {
@@ -38,7 +38,7 @@ export default function Tools() {
             const data = {
                 isAdmin,
                 status,
-                type: user.type,
+                type: user?.type,
             };
             const res = await post.switchStatus(data, id);
             if (res.status === 200) {
@@ -84,7 +84,7 @@ export default function Tools() {
     return (
         <div>
             <div className="flex justify-end">
-                {isAdmin && (
+                {(isAdmin || user?.type === 1 || user?.status === 1) && (
                     <Link
                         to="/tool/add"
                         className="my-1 p-1 text-sm rounded-sm bg-green-600 text-white uppercase"
@@ -134,45 +134,61 @@ export default function Tools() {
                                         {item.title}
                                     </Typography>
                                 </td>
-                                <td className="p-4">
-                                    <div className="flex gap-3">
-                                        <button type="button" className="text-green-500">
-                                            <MdEdit />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="text-red-500"
-                                            onClick={() => handleDelete(item._id)}
-                                        >
-                                            <MdDelete />
-                                        </button>
-                                    </div>
-                                </td>
-                                <td className="p-4">
-                                    <div className="flex gap-3">
-                                        {item.status === 0 ? (
-                                            <button
-                                                type="button"
-                                                className="text-green-500"
-                                                onClick={() =>
-                                                    handleSwitch(1, item._id, item.title)
-                                                }
-                                            >
-                                                <LuPower />
+                                {isAdmin || user?.type === 1 || user?.status === 1 ? (
+                                    <td className="p-4">
+                                        <div className="flex gap-3">
+                                            <button type="button" className="text-green-500">
+                                                <MdEdit />
                                             </button>
-                                        ) : (
                                             <button
                                                 type="button"
                                                 className="text-red-500"
-                                                onClick={() =>
-                                                    handleSwitch(0, item._id, item.title)
-                                                }
+                                                onClick={() => handleDelete(item._id)}
                                             >
-                                                <LuPowerOff />
+                                                <MdDelete />
                                             </button>
-                                        )}
-                                    </div>
-                                </td>
+                                        </div>
+                                    </td>
+                                ) : (
+                                    <td className="p-4">
+                                        <div className="flex gap-3 text-red-500">
+                                            <p>You are not permitted</p>
+                                        </div>
+                                    </td>
+                                )}
+                                {isAdmin || user?.type === 1 || user?.status === 1 ? (
+                                    <td className="p-4">
+                                        <div className="flex gap-3">
+                                            {item.status === 0 ? (
+                                                <button
+                                                    type="button"
+                                                    className="text-green-500"
+                                                    onClick={() =>
+                                                        handleSwitch(1, item._id, item.title)
+                                                    }
+                                                >
+                                                    <LuPower />
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    type="button"
+                                                    className="text-red-500"
+                                                    onClick={() =>
+                                                        handleSwitch(0, item._id, item.title)
+                                                    }
+                                                >
+                                                    <LuPowerOff />
+                                                </button>
+                                            )}
+                                        </div>
+                                    </td>
+                                ) : (
+                                    <td className="p-4">
+                                        <div className="flex gap-3 text-red-500">
+                                            <p>You are not permitted</p>
+                                        </div>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>
