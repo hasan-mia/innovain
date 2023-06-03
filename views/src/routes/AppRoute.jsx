@@ -1,7 +1,6 @@
 import React from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
-import AdminDashboard from '../pages/AdminDashboard';
 import Authentication from '../pages/Authentication';
 import Error from '../pages/Error';
 import Home from '../pages/Home';
@@ -26,7 +25,7 @@ export default function AppRoute() {
             >
                 <Route path="/" element={<Home />} />
                 <Route path="/auth" element={<Authentication />} />
-                <Route path="/dashboard" element={<AdminDashboard />} />
+                <Route path="/dashboard" element={<Tools />} />
                 {/* user */}
                 <Route path="/users" element={<Users />} />
                 {/* category */}
