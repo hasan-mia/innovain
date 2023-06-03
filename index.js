@@ -15,7 +15,7 @@ const postRoute = require("./routes/api/v1/post.route");
 const categoryRoute = require("./routes/api/v1/category.route");
 
 // Middleware
-app.use(cors());
+app.use(cors()); // Enable CORS for all routes
 app.use(express.json());
 app.use(morgan("common"));
 app.use(helmet());
@@ -43,10 +43,16 @@ app.use("/api/v1/user", userRoute); // user route
 app.use("/api/v1/category", categoryRoute); // category route
 app.use("/api/v1/post", postRoute); // post route
 
-// // ===================================//
-// //      setup socket IO Server        //
-// //====================================//
-const io = socketIO(server);
+// ===================================//
+//      setup socket IO Server        //
+//====================================//
+
+const io = socketIO(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 io.on("connection", (socket) => {
   console.log("A user connected");
