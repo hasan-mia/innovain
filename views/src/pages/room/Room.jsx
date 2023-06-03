@@ -78,8 +78,8 @@ export default function Room() {
                         </tr>
                     </thead>
                     <tbody>
-                        {categories?.data.map((item, index) => {
-                            const isLast = index === categories.data.length - 1;
+                        {categories?.map((item, index) => {
+                            const isLast = index === categories.length - 1;
                             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
                             return (

@@ -2,42 +2,47 @@
 /* eslint-disable no-underscore-dangle */
 import { Card, Spinner, Typography } from '@material-tailwind/react';
 import { useEffect } from 'react';
+import { LuPower, LuPowerOff } from 'react-icons/lu';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import auth from '../../redux/api/auth';
 import post from '../../redux/api/post';
 
-const TABLE_HEAD = ['Serial', 'Name', 'Action', 'Switch'];
+const TABLE_HEAD = ['Serial', 'Name', 'Action', 'Status'];
 
 export default function Tools() {
     const { posts, isLoading } = useSelector((state) => state.post);
-    const { isAdmin } = useSelector((state) => state.auth);
+    const { users, userInfo, isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+    const user = users?.find((item) => item._id === userInfo.userId);
     // handle switch
-    const handleSwitch = async (status, id) => {
+    const handleSwitch = async (status, id, name) => {
         if (status === 1) {
             const data = {
                 isAdmin,
                 status,
-                type: 1,
+                type: user.type,
             };
             const res = await post.switchStatus(data, id);
             if (res.status === 200) {
-                toast.success(`Permition granted`);
+                toast.success(`${name} On`);
                 dispatch(post.allPost());
             } else {
                 toast.error(`${res.data.error}`);
             }
-        } else {
+        }
+
+        if (status === 0) {
             const data = {
-                isAdmin: true,
+                isAdmin,
                 status,
-                type: 1,
+                type: user.type,
             };
             const res = await post.switchStatus(data, id);
             if (res.status === 200) {
-                toast.success(`Permition removed`);
+                toast.success(`${name} OFF`);
                 dispatch(post.allPost());
             } else {
                 toast.error(`${res.data.error}`);
@@ -62,7 +67,10 @@ export default function Tools() {
         if (!posts) {
             dispatch(post.allPost());
         }
-    }, [posts, dispatch]);
+        if (!users) {
+            dispatch(auth.allUser());
+        }
+    }, [posts, users, dispatch]);
 
     if (isLoading) {
         return (
@@ -106,31 +114,28 @@ export default function Tools() {
                         </tr>
                     </thead>
                     <tbody>
-                        {posts?.data?.map((item, index) => {
-                            const isLast = index === posts.data.length - 1;
-                            const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
-
-                            return (
-                                <tr key={item._id}>
-                                    <td className={classes}>
-                                        <Typography
-                                            variant="small"
-                                            color="blue-gray"
-                                            className="font-normal"
-                                        >
-                                            {index + 1}
-                                        </Typography>
-                                    </td>
-                                    <td className={classes}>
-                                        <Typography
-                                            variant="small"
-                                            color="blue-gray"
-                                            className="font-normal"
-                                        >
-                                            {item?.title}
-                                        </Typography>
-                                    </td>
-                                    <td className={`${classes} flex gap-2`}>
+                        {posts?.map((item, index) => (
+                            <tr key={item._id} className="even:bg-blue-gray-50/50">
+                                <td className="p-4">
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-normal"
+                                    >
+                                        {index + 1}
+                                    </Typography>
+                                </td>
+                                <td className="p-4">
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-normal"
+                                    >
+                                        {item.title}
+                                    </Typography>
+                                </td>
+                                <td className="p-4">
+                                    <div className="flex gap-3">
                                         <button type="button" className="text-green-500">
                                             <MdEdit />
                                         </button>
@@ -141,42 +146,35 @@ export default function Tools() {
                                         >
                                             <MdDelete />
                                         </button>
-                                        <button type="button" className="text-green-500">
-                                            <MdEdit />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="text-red-500"
-                                            onClick={() => handleDelete(item._id)}
-                                        >
-                                            <MdDelete />
-                                        </button>
-                                    </td>
-                                    <td className={`${classes} flex gap-2`}>
-                                        <button type="button" className="text-green-500">
-                                            <MdEdit />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="text-red-500"
-                                            onClick={() => handleDelete(item._id)}
-                                        >
-                                            <MdDelete />
-                                        </button>
-                                        <button type="button" className="text-green-500">
-                                            <MdEdit />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="text-red-500"
-                                            onClick={() => handleDelete(item._id)}
-                                        >
-                                            <MdDelete />
-                                        </button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
+                                    </div>
+                                </td>
+                                <td className="p-4">
+                                    <div className="flex gap-3">
+                                        {item.status === 0 ? (
+                                            <button
+                                                type="button"
+                                                className="text-green-500"
+                                                onClick={() =>
+                                                    handleSwitch(1, item._id, item.title)
+                                                }
+                                            >
+                                                <LuPower />
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                className="text-red-500"
+                                                onClick={() =>
+                                                    handleSwitch(0, item._id, item.title)
+                                                }
+                                            >
+                                                <LuPowerOff />
+                                            </button>
+                                        )}
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </Card>

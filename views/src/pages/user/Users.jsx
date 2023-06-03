@@ -80,8 +80,8 @@ export default function Users() {
                         </tr>
                     </thead>
                     <tbody>
-                        {users?.data.map((item, index) => {
-                            const isLast = index === users.data.length - 1;
+                        {users?.map((item, index) => {
+                            const isLast = index === users.length - 1;
                             const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50';
 
                             return (

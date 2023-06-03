@@ -89,7 +89,7 @@ export default function Add() {
                         onChange={(value) => setSelectedValue(value)}
                         required
                     >
-                        {categories?.data?.map((item) => (
+                        {categories?.map((item) => (
                             <Option key={item._id} value={item?._id}>
                                 {item?.title}
                             </Option>
