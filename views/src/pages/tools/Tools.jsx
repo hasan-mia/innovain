@@ -17,7 +17,7 @@ export default function Tools() {
     const { posts, isLoading } = useSelector((state) => state.post);
     const { users, userInfo, isAdmin } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
-    const user = users?.find((item) => item._id === userInfo?.userId);
+    const user = users?.find((item) => item.email === userInfo?.email);
     // handle switch
     const handleSwitch = async (status, id, name) => {
         if (status === 1) {
